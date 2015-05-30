@@ -9,7 +9,8 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script src="qunit-1.18.0.js"></script>
-  <script src="../Array.js"></script>
+  <script src="blanket.min.js"></script>
+  <script src="../Array.js" data-cover></script>
   <script>
   QUnit.test("array enumeration", function( assert ) {
 	var arr = [1,2,3], arr2 = [], arr3 = [];
@@ -140,6 +141,11 @@
 	assert.strictEqual([1,2,3].norm(),Math.sqrt(14));
 	assert.strictEqual([1,0,3].norm(),Math.sqrt(10));
 	assert.strictEqual([].norm(),0);
+  });
+  QUnit.test("normalize", function( assert ) {
+	assert.deepEqual([1,2,3].normalize(),[1/Math.sqrt(14),2/Math.sqrt(14),3/Math.sqrt(14)]);
+	assert.deepEqual([1,0,3].normalize(),[1/Math.sqrt(10),0,3/Math.sqrt(10)]);
+	assert.deepEqual([].normalize(),[]);
   });
   QUnit.test("addScalar", function( assert ) {
 	assert.deepEqual([1,2,3].addScalar(1),[2,3,4]);
