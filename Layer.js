@@ -1,3 +1,4 @@
+'USE STRICT';
 function Layer(n) {
 	this.neurons = [];
 	this.addNeuron = function(neuron) {

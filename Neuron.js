@@ -1,3 +1,4 @@
+'USE STRICT';
 function Neuron(n) {
  this.lr = 0.1;
  this.momentum = 0.0;
