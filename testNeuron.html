@@ -1,0 +1,147 @@
+<style>
+table {
+ margin: auto;
+}
+table, td, th {
+ border: 1px solid black;
+}
+</style>
+<script src="Array.js"></script>
+<script src="Neuron.js"></script>
+
+<table id="axt">
+<caption>Aggregation X Transfer</caption>
+</table>
+
+<script>
+
+var errors = {};
+for (var aggregation in Neuron.aggregation) {
+	errors[aggregation] = {};
+	for (var transfer in Neuron.transfer) {
+		errors[aggregation][transfer] = {};
+		for (var error in Neuron.error) {
+			errors[aggregation][transfer][error] = {and:0,or:0,rnd:0,grad:0};
+		}
+	}
+}
+
+for (var k = 0; k < 10; k++) {
+	console.info('Iteration '+k);
+	for (var aggregation in Neuron.aggregation) {
+		for (var transfer in Neuron.transfer) {
+			for (var error in Neuron.error) {
+				if (error == 'crossent' && transfer != 'logistic' && transfer != 'gaussian') continue;
+				
+				//console.debug('AND TEST',aggregation,transfer,error);
+				var N = new Neuron(3);
+				N.transfer = Neuron.transfer[transfer];
+				N.aggregate = Neuron.aggregation[aggregation];
+				N.errorFunction = Neuron.error[error];
+				var errs;
+				for (var i = 0; i < 100; i++) { errs = N.batchLearn([[0,0,1],[0,1,1],[1,0,1],[1,1,1]],[0,0,0,1])}
+				var out_and = N.batchActivate([[0,0,1],[0,1,1],[1,0,1],[1,1,1]]);
+				if (out_and[3] > out_and[2] && out_and[3] > out_and[1] && out_and[3] > out_and[0]) {
+					//console.info('AND OK',aggregation,transfer,error);
+				}
+				else {
+					console.error('AND FAILED '+out_and,aggregation,transfer,error);
+					errors[aggregation][transfer][error].and++;
+				}
+				
+				//console.debug('OR TEST',aggregation,transfer,error);
+				N = new Neuron(3);
+				N.transfer = Neuron.transfer[transfer];
+				N.aggregate = Neuron.aggregation[aggregation];
+				N.errorFunction = Neuron.error[error];
+				for (var i = 0; i < 100; i++) { errs = N.batchLearn([[0,0,1],[0,1,1],[1,0,1],[1,1,1]],[0,1,1,1])}
+				var out_or = N.batchActivate([[0,0,1],[0,1,1],[1,0,1],[1,1,1]]);
+				if (out_or[3] > out_or[0] && out_or[2] > out_or[0] && out_or[1] > out_or[0]) {
+					//console.info('OR OK',aggregation,transfer,error);
+				}
+				else {
+					console.error('OR FAILED '+out_or,aggregation,transfer,error);
+					errors[aggregation][transfer][error].or++;
+				}	
+
+				//console.debug('GRADIENT CHECK',aggregation,transfer,error);
+				var check = N.batchCheck([[0,0,1],[0,1,1],[1,0,1],[1,1,1]],[0,1,1,1]);
+				var err = check[0].distance(check[1]);
+				if (err < N.eps) {
+					//console.info('GRADIENT OK',aggregation,transfer,error);
+				}
+				else {
+					console.error('GRADIENT FAILED',aggregation,transfer,error,check);
+					errors[aggregation][transfer][error].grad++;
+				}
+				
+				if (transfer == 'identity') {
+					//console.debug('RANDOM TEST',aggregation,transfer,error);
+					var d = Math.ceil(Math.random() * 100);
+					var n = Math.ceil(Math.random() * 100);
+					var scale = Math.ceil(Math.random() * 100);
+					N = new Neuron(d);
+					N.transfer = Neuron.transfer[transfer];
+					N.aggregate = Neuron.aggregation[aggregation];
+					N.errorFunction = Neuron.error[error];
+					var inputs = [];
+					var targets = [];
+					for (var i = 0; i < n; i++) {
+						var datum = Array.random(d,1).mul(scale);
+						datum[n-1] = 1;
+						inputs.push(datum);
+						targets.push(Math.random() * scale);
+					}
+					for (var i = 0; i < 100; i++) { errs = N.batchLearn(inputs,targets)}
+					var out_rnd = N.batchActivate(inputs);
+
+					//console.debug('RANDOM GRADIENT CHECK',aggregation,transfer,error);
+					var check = N.batchCheck(inputs,targets);
+					var err = check[0].distance(check[1]);
+					if (err < N.eps) {
+						//console.info('RANDOM GRADIENT OK',aggregation,transfer,error);
+					}
+					else {
+						console.error('RANDOM GRADIENT FAILED',aggregation,transfer,error,check);
+						errors[aggregation][transfer][error].rnd++;
+					}
+				}
+				
+
+			}
+		}
+	}
+}
+
+var toprow = document.createElement('tr');
+axt.appendChild(toprow);
+toprow.appendChild(document.createElement('th'));
+for (var transfer in Neuron.transfer) {
+	var topcell = document.createElement('th');
+	topcell.innerHTML = transfer;
+	toprow.appendChild(topcell);
+}
+
+for (var aggregation in Neuron.aggregation) {
+	var row = document.createElement('tr');
+	axt.appendChild(row);
+	var leftcell = document.createElement('th');
+	leftcell.innerHTML = aggregation;
+	row.appendChild(leftcell);
+	for (var transfer in Neuron.transfer) {
+		var cell = document.createElement('td');
+		row.appendChild(cell);
+		for (var error in Neuron.error) {
+			if (errors[aggregation][transfer][error].and)
+				cell.innerHTML += error +' AND: ' + errors[aggregation][transfer][error].and+'<br>';
+			if (errors[aggregation][transfer][error].or)
+				cell.innerHTML += error +' OR: ' + errors[aggregation][transfer][error].or+'<br>';
+			if (errors[aggregation][transfer][error].rnd)
+				cell.innerHTML += error +' RND: ' + errors[aggregation][transfer][error].rnd+'<br>';
+			if (errors[aggregation][transfer][error].grad)
+				cell.innerHTML += error +' GRAD: ' + errors[aggregation][transfer][error].grad+'<br>';
+		}
+	}
+}
+
+</script>
