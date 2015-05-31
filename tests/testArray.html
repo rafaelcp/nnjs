@@ -100,15 +100,15 @@
 	assert.strictEqual([].median(),null);
   });
   QUnit.test("var", function( assert ) {
-	assert.strictEqual([1,2,3,4].var(),5/3);
-	assert.strictEqual([-1,-2,-3,-4].var(),5/3);
-	assert.strictEqual([1,1,2,3,4].var(),1.7);
-	assert.strictEqual([-1,-1,-2,-3,-4].var(),1.7);
-	assert.strictEqual([-3,-2,-1,0,1,2,3].var(),14/3);
-	assert.strictEqual([3,2,1,0,-3,-2,-1].var(),14/3);
-	assert.strictEqual([123].var(),null);
-	assert.strictEqual([].var(),null);
-	assert.strictEqual([1].var(),null);
+	assert.strictEqual([1,2,3,4].variance(),5/3);
+	assert.strictEqual([-1,-2,-3,-4].variance(),5/3);
+	assert.strictEqual([1,1,2,3,4].variance(),1.7);
+	assert.strictEqual([-1,-1,-2,-3,-4].variance(),1.7);
+	assert.strictEqual([-3,-2,-1,0,1,2,3].variance(),14/3);
+	assert.strictEqual([3,2,1,0,-3,-2,-1].variance(),14/3);
+	assert.strictEqual([123].variance(),null);
+	assert.strictEqual([].variance(),null);
+	assert.strictEqual([1].variance(),null);
   });
   QUnit.test("stddev", function( assert ) {
 	assert.strictEqual([1,2,3,4].stddev(),Math.sqrt(5/3));
