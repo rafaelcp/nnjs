@@ -1,0 +1,18 @@
+{
+  "name": "nnjs",
+  "version": "0.1",
+  "description": "Neural Network JavaScript Library",
+  "author": "Rafael C.P. <rcpinto@inf.ufrgs.br>",
+  "devDependencies": {
+    "grunt-cli": "0.1.6",
+    "grunt": "0.4.0",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-qunit": "~0.1.1",
+    "grunt-qunit-junit": "~0.1.0",
+    "grunt-contrib-watch": "~0.2.0",
+    "grunt-qunit-cov": "~0.3.2"
+  }
+  "scripts": {
+    "test": "grunt travis"
+  } 
+}
