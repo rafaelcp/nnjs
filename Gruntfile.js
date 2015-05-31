@@ -9,8 +9,8 @@ module.exports = function (grunt) {
           quotmark: true, regexp: true, undef: true, unused: true, strict: true, trailing: true,
           maxparams: 3, maxdepth: 2, maxstatements: 50},
         all: [
-          'Gruntfile.js',
-          'src/js/**/*.js'
+            'Gruntfile.js',
+		    'src/js/**/*.js'
         ]
     };
     grunt.initConfig(gruntConfig);
