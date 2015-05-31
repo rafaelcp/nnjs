@@ -4,35 +4,35 @@
 		this.lr = 0.1;
 		this.momentum = 0.0;
 		this.decay = 0.0;
-		this.eps = 1e-4; 
+		this.eps = 1e-4;
 		this.acum = 0;
 		this.transfer = Neuron.transfer.identity;
 		this.aggregate = Neuron.aggregation.dot;
 		this.errorFunction = Neuron.error.MSE;
-		this.randomize = function(n) {
+		this.randomize = function (n) {
 			this.prevChange = Array.zeros(n);
-			this.W = Array.random(n,1).mul(2).sub(1).div(Math.sqrt(n));	 
+			this.W = Array.random(n, 1).mul(2).sub(1).div(Math.sqrt(n));	 
 		}
 		if (!!n) {
 			this.randomize(n);
 		}
-		this.activate = function(input) {
+		this.activate = function (input) {
 			if (!this.W) {
 				this.randomize(input.length);
 			}
 			return this.transfer(this.aggregate(this.W, input));
 		}
-		this.batchActivate = function(inputs) {
+		this.batchActivate = function (inputs) {
 			var activations = [];
 			for (var i = 0; i < inputs.length; i++) {
 				activations.push(this.activate(inputs[i]));
 			}
 			return activations;
 		}
-		this.grad = function(input, ainput, output, target,W) {	
+		this.grad = function (input, ainput, output, target,W) {	
 			return this.aggregate.dw(W, input).mul(this.errorFunction.d(output, target) * this.transfer.d(ainput, output));
 		}
-		this.learn = function(input, target) {
+		this.learn = function (input, target) {
 			if (!this.W) {
 				this.randomize(input.length);
 			}
@@ -42,39 +42,41 @@
 			var err = target - output;
 			//console.log('ainput', ainput,'output', output,'target', target,'grad',grad,'err',err);
 			this.acum += output;
-			var change = grad.mul(1-this.momentum).add(this.W.mul(this.decay)).mul(this.lr).add(this.prevChange.mul(this.momentum));
+			var change = grad.mul(1 - this.momentum).add(this.W.mul(this.decay)).mul(this.lr).add(this.prevChange.mul(this.momentum));
 			this.W = this.W.sub(change);
 			this.prevChange = change.slice();
 			return err;
 		}
-		this.cost = function(input, target,W) {
+		this.cost = function (input, target, W) {
 			var ainput0 = this.aggregate(W, input);
 			var output0 = this.transfer(ainput0);
 			return this.errorFunction(output0, target);
 		}
-		this.check = function(input, target) {
-			if (!this.W) this.randomize(input.length);	 
+		this.check = function (input, target) {
+			if (!this.W) {
+				this.randomize(input.length);
+			}
 			var i;
 			var W = this.W.slice();
 			var ainput0 = this.aggregate(W, input);
 			var output0 = this.transfer(ainput0);
-			var grad = this.grad(input, ainput0, output0, target,W);
+			var grad = this.grad(input, ainput0, output0, target, W);
 			var num_grad = [];
 			for (i = 0; i < input.length; i++) {
 				var W1 = W.slice();
 				var W2 = W.slice();
 				W1[i] -= this.eps;
 				W2[i] += this.eps;
-				var err1 = this.cost(input, target,W1);
-				var err2 = this.cost(input, target,W2);
+				var err1 = this.cost(input, target, W1);
+				var err2 = this.cost(input, target, W2);
 				num_grad[i] = (err2 - err1) / (2 * this.eps);
 				//if (Math.abs(num_grad[i] - grad[i]) > eps) return false;
 			}
 			//console.log('GRAD',grad);
 			//console.log('NUM_GRAD',num_grad);
-			return [grad,num_grad];
+			return [grad, num_grad];
 		}
-		this.batchCheck = function(inputs, targets) {
+		this.batchCheck = function (inputs, targets) {
 			if (!this.W) {
 				this.randomize(inputs[0].length);
 			}
@@ -94,10 +96,10 @@
 					num_grad = num_grad.add(r[1]);
 				}
 			}
-			return [grad,num_grad];
+			return [grad, num_grad];
 		}
 
-		this.batchLearn = function(inputs, targets) {
+		this.batchLearn = function (inputs, targets) {
 			if (!this.W) {
 				this.randomize(inputs[0].length);	 
 			}
@@ -108,15 +110,15 @@
 				ainput = this.aggregate(this.W, input);
 				output = this.transfer(ainput);
 				if (!grad) {
-					grad = this.grad(input, ainput, output, target,this.W);
+					grad = this.grad(input, ainput, output, target, this.W);
 				}
 				else {
-					grad = grad.add(this.grad(input, ainput, output, target,this.W));
+					grad = grad.add(this.grad(input, ainput, output, target, this.W));
 				}
 				errs.push(target - output);
 				this.acum += output;
 			}
-			var change = grad.mul(1-this.momentum).add(this.W.mul(this.decay)).mul(this.lr).add(this.prevChange.mul(this.momentum));
+			var change = grad.mul(1 - this.momentum).add(this.W.mul(this.decay)).mul(this.lr).add(this.prevChange.mul(this.momentum));
 			this.W = this.W.sub(change);
 			this.prevChange = change.slice();
 			return errs;
@@ -127,7 +129,7 @@
 			return errs;
 			*/
 		}
-		this.propagate = function(input, ainput, output, target) {	
+		this.propagate = function (input, ainput, output, target) {	
 			return this.aggregate.dx(this.W, input).mul(this.errorFunction.d(output, target) * this.transfer.d(ainput, output));
 		}
 	}
@@ -143,7 +145,7 @@
 	Neuron.transfer.logistic = function (x) { return 1 / (1 + Math.exp(-x)) };
 	Neuron.transfer.logistic.d = function (x, y) { return  y * (1 - y) };
 
-	Neuron.transfer.relu = function (x) { return Math.max(0,x) };
+	Neuron.transfer.relu = function (x) { return Math.max(0, x) };
 	Neuron.transfer.relu.d = function (x, y) { return Number(x > 0) };
 
 	Neuron.transfer.gaussian = function (x) { return Math.exp(-(x * x)) };
@@ -183,20 +185,20 @@
 	//Error Functions
 	Neuron.error = {}
 
-	Neuron.error.MSE = function (output, target) { return 0.5*Math.pow(output - target,2) };
+	Neuron.error.MSE = function (output, target) { return 0.5 * Math.pow(output - target, 2) };
 	Neuron.error.MSE.d = function (output, target) { return (output - target) };
 
 	Neuron.error.MAE = function (output, target) { return Math.abs(output - target) };
 	Neuron.error.MAE.d = function (output, target) { return Math.sign(output - target) };
 
 	Neuron.error.crossent = function (output, target) {
-		var y = Math.max(0,Math.min(1, output));
-		var t = Math.max(0,Math.min(1, target));
+		var y = Math.max(0, Math.min(1, output));
+		var t = Math.max(0, Math.min(1, target));
 		return -(t * Math.log(Math.max(y,Number.EPSILON)) + (1 - t) * Math.log(Math.max(1 - y,Number.EPSILON)));
 	};
 	Neuron.error.crossent.d = function (output, target) {
-		var y = Math.max(0,Math.min(1, output));
-		var t = Math.max(0,Math.min(1, target));
+		var y = Math.max(0, Math.min(1, output));
+		var t = Math.max(0, Math.min(1, target));
 		return (y - t) / Math.max(((1 - y) * y),Number.EPSILON);
 	};
 }());
