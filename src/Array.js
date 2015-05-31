@@ -147,7 +147,7 @@
 		if (arr.length !== this.length) {
 			throw 'Array sizes must match';
 		}
-		return this.add(arr.mulScalar(-1));
+		return this.add(arr.mulScalar(- 1));
 	};
 	Array.prototype.mul = function (arr) {
 		if (!arr.length) {
@@ -205,11 +205,14 @@
 		var i, j, M2 = [];
 		M2[0] = [];
 		for (i = 0; i < this.length; i++) {
-			if (!this[i].length)
-			M2[0][i] = this[i];
+			if (!this[i].length) {
+				M2[0][i] = this[i];
+			}
 			else
 				for (j = 0; j < this[i].length; j++) {
-					if (!M2[j]) M2[j] = [];
+					if (!M2[j]) {
+						M2[j] = [];
+					}
 					M2[j][i] = this[i][j];
 				}
 		}
@@ -243,13 +246,13 @@
 			var i, s = '';
 			for (i = 0; i < this.length; i++) {
 				s += this[i].inspect();
-				if (i !== this.length-1) s += '\n';
+				if (i !== this.length - 1) s += '\n';
 			}
 			return s;
 		}
 	};
 	//STATIC METHODS
-	Array.repeat = function (x,n,m) {
+	Array.repeat = function (x, n, m) {
 		if (x === undefined) {
 			throw 'Must specify element to repeat.';
 		}
@@ -266,7 +269,7 @@
 		}
 		return arr.flatten();
 	};
-	Array.random = function (n,m) {
+	Array.random = function (n, m) {
 		if (!n) {
 			throw 'Must specify matrix size.';
 		}
@@ -280,26 +283,26 @@
 		}
 		return arr.flatten();
 	};
-	Array.zeros = function (n,m) {
+	Array.zeros = function (n, m) {
 		if (!n) {
 			throw 'Must specify matrix size.';
 		}
 		m = m || 1;
-		return Array.repeat(0,n,m);
+		return Array.repeat(0,n, m);
 	};
-	Array.ones = function (n,m) {
+	Array.ones = function (n, m) {
 		if (!n) {
 			throw 'Must specify matrix size.';
 		}
 		m = m || 1;
-		return Array.repeat(1,n,m);
+		return Array.repeat(1,n, m);
 	};
-	Array.eye = function (n,m) {
+	Array.eye = function (n, m) {
 		if (!n) {
 			throw 'Must specify matrix size.';
 		}
 		m = m || n;
-		var i,j;
+		var i, j;
 		var arr = [];
 		for (i = 0; i < n; i++) {
 			arr[i] = [];
