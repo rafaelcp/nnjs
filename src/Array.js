@@ -3,7 +3,9 @@
 	'USE STRICT';
 	Array.prototype.max = function (arr) {
 		if (!!arr) {
-			if (arr.length !== this.length) throw 'Array sizes must match';
+			if (arr.length !== this.length) {
+				throw 'Array sizes must match';
+			}
 			return this.map(function (el, i) { return Math.max(el, arr[i]); });
 		}
 		else {
@@ -18,7 +20,9 @@
 	};
 	Array.prototype.min = function (arr) {
 		if (!!arr) {
-			if (arr.length !== this.length) throw 'Array sizes must match';
+			if (arr.length !== this.length) {
+				throw 'Array sizes must match';
+			}
 			return this.map(function (el, i) { return Math.min(el, arr[i]); });
 		}
 		else {
@@ -70,13 +74,17 @@
 		return Math.sqrt(this.variance());
 	};
 	Array.prototype.dot = function (arr) {
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		var result = 0;
 		this.forEach(function (el, i) { result += el * arr[i]; });
 		return result;
 	};
 	Array.prototype.outer = function (arr) {
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		var arr2 = [];
 		this.forEach(function (el, i) {
 			var j;
@@ -91,23 +99,31 @@
 		return Math.sqrt(this.dot(this));
 	};
 	Array.prototype.addScalar = function (x) {
-		if (x.length) throw 'Argument must be a scalar';
+		if (x.length) {
+			throw 'Argument must be a scalar';
+		}
 		var arr = [];
 		this.forEach(function (el, i) { if (el.length) arr[i] = el.addScalar(x); else arr[i] = el + x; });
 		return arr;
 	};
 	Array.prototype.subScalar = function (x) {
-		if (x.length) throw 'Argument must be a scalar';
+		if (x.length) {
+			throw 'Argument must be a scalar';
+		}
 		return this.addScalar(-x);
 	};
 	Array.prototype.mulScalar = function (x) {
-		if (x.length) throw 'Argument must be a scalar';
+		if (x.length) {
+			throw 'Argument must be a scalar';
+		}
 		var arr = [];
 		this.forEach(function (el, i) { if (el.length) arr[i] = el.mulScalar(x); else arr[i] = el * x; });
 		return arr;
 	};
 	Array.prototype.divScalar = function (x) {
-		if (x.length) throw 'Argument must be a scalar';
+		if (x.length) {
+			throw 'Argument must be a scalar';
+		}
 		return this.mulScalar(1/x);
 	};
 	Array.prototype.normalize = function () {
@@ -117,7 +133,9 @@
 		if (!arr.length) {
 			return this.addScalar(arr);
 		}
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		var arr2 = [];
 		this.forEach(function (el, i) { if (el.length) arr2[i] = el.add(arr[i]); else arr2[i] = el + arr[i]; });
 		return arr2;
@@ -126,14 +144,18 @@
 		if (!arr.length) {
 			return this.subScalar(arr);
 		}
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		return this.add(arr.mulScalar(-1));
 	};
 	Array.prototype.mul = function (arr) {
 		if (!arr.length) {
 			return this.mulScalar(arr);
 		}
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		var arr2 = [];
 		this.forEach(function (el, i) { if (el.length) arr2[i] = el.mul(arr[i]); else arr2[i] = el * arr[i]; });
 		return arr2;
@@ -142,18 +164,24 @@
 		if (!arr.length) {
 			return this.divScalar(arr);
 		}
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		var arr2 = [];
 		this.forEach(function (el, i) { if (el.length) arr2[i] = el.div(arr[i]); else arr2[i] = el / arr[i]; });
 		return arr2;
 	};
 	Array.prototype.squareDistance = function (arr) {
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		var diff = this.sub(arr);
 		return diff.dot(diff);
 	};
 	Array.prototype.distance = function (arr) {
-		if (arr.length !== this.length) throw 'Array sizes must match';
+		if (arr.length !== this.length) {
+			throw 'Array sizes must match';
+		}
 		return Math.sqrt(this.squareDistance(arr));
 	};
 	Array.prototype.dims = function () {
@@ -193,13 +221,14 @@
 	Array.prototype.matProd = Array.prototype.x = function (M2) {
 		var i, j, M3 = [], M1 = this.toMatrix();
 		var M2_ = M2.transpose();
-		if (M1.dims()[1] !== M2.dims()[0]) throw 'matProd: Dimension mismatch ('+M1.dims()[1]+' !== '+M2.dims()[0]+')';
-			for (i = 0; i < M1.length; i++) {
-				M3[i] = [];
-				for (j = 0; j < M2_.length; j++) {
-					M3[i][j] = M1[i].dot(M2_[j]);
-				}
+		if (M1.dims()[1] !== M2.dims()[0]) {
+		}
+		for (i = 0; i < M1.length; i++) {
+			M3[i] = [];
+			for (j = 0; j < M2_.length; j++) {
+				M3[i][j] = M1[i].dot(M2_[j]);
 			}
+		}
 		return M3.flatten();
 	};
 	Array.prototype.inspect = function () {
@@ -220,8 +249,12 @@
 	};
 	//STATIC METHODS
 	Array.repeat = function (x,n,m) {
-		if (x === undefined) throw 'Must specify element to repeat.';
-		if (!n) throw 'Must specify number of repetitions.';
+		if (x === undefined) {
+			throw 'Must specify element to repeat.';
+		}
+		if (!n) {
+			throw 'Must specify number of repetitions.';
+		}
 		m = m || 1;
 		var i, j, arr = [];
 		for (i = 0; i < n; i++) {
@@ -233,7 +266,9 @@
 		return arr.flatten();
 	};
 	Array.random = function (n,m) {
-		if (!n) throw 'Must specify matrix size.';
+		if (!n) {
+			throw 'Must specify matrix size.';
+		}
 		m = m || 1;
 		var i, j, arr = [];
 		for (i = 0; i < n; i++) {
@@ -245,17 +280,23 @@
 		return arr.flatten();
 	};
 	Array.zeros = function (n,m) {
-		if (!n) throw 'Must specify matrix size.';
+		if (!n) {
+			throw 'Must specify matrix size.';
+		}
 		m = m || 1;
 		return Array.repeat(0,n,m);
 	};
 	Array.ones = function (n,m) {
-		if (!n) throw 'Must specify matrix size.';
+		if (!n) {
+			throw 'Must specify matrix size.';
+		}
 		m = m || 1;
 		return Array.repeat(1,n,m);
 	};
 	Array.eye = function (n,m) {
-		if (!n) throw 'Must specify matrix size.';
+		if (!n) {
+			throw 'Must specify matrix size.';
+		}
 		m = m || n;
 		var i,j;
 		var arr = [];
