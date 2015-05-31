@@ -7,7 +7,9 @@
 			return this.map(function (el, i) { return Math.max(el, arr[i]); });
 		}
 		else {
-			if (this.length === 0) return null;
+			if (this.length === 0) {
+				return null;
+			}
 			return Math.max.apply(null, this);
 		}
 	};
@@ -20,7 +22,9 @@
 			return this.map(function (el, i) { return Math.min(el, arr[i]); });
 		}
 		else {
-			if (this.length === 0) return null;
+			if (this.length === 0) {
+				return null;
+			}
 			return Math.min.apply(null, this);
 		}
 	};
@@ -34,27 +38,35 @@
 		return this.reduce(function (a, b) { return a * b; }, 1);
 	};
 	Array.prototype.mean = function () {
-		if (this.length === 0) return null;
+		if (this.length === 0) {
+			return null;
+		}
 		return this.sum() / this.length;
 	};
 	Array.prototype.median = function () {
-		if (this.length === 0) return null;
+		if (this.length === 0) {
+			return null;
+		}
 		var sorted = this.sort();
-		if (this.length % 2 == 1) {
+		if (this.length % 2 === 1) {
 			return sorted[Math.floor(this.length / 2)];
 		}
 		else {
-			return sorted.slice(Math.floor(this.length / 2)-1,Math.floor(this.length / 2)+1).mean();
+			return sorted.slice(Math.floor(this.length / 2) - 1, Math.floor(this.length / 2) + 1).mean();
 		}
 	};
 	Array.prototype.variance = function () {
-		if (this.length <= 1) return null;
+		if (this.length <= 1) {
+			return null;
+		}
 		var m = this.mean();
 		var sqdiffs = this.map(function (el) { return Math.pow(el - m, 2); });
 		return sqdiffs.sum() / (this.length - 1);
 	};
 	Array.prototype.stddev = function () {
-		if (this.length <= 1) return null;
+		if (this.length <= 1) {
+			return null;
+		}
 		return Math.sqrt(this.variance());
 	};
 	Array.prototype.dot = function (arr) {
@@ -102,26 +114,34 @@
 		return this.divScalar(this.norm());
 	};
 	Array.prototype.add = function (arr) {
-		if (!arr.length) return this.addScalar(arr);
+		if (!arr.length) {
+			return this.addScalar(arr);
+		}
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var arr2 = [];
 		this.forEach(function (el, i) { if (el.length) arr2[i] = el.add(arr[i]); else arr2[i] = el + arr[i]; });
 		return arr2;
 	};
 	Array.prototype.sub = function (arr) {
-		if (!arr.length) return this.subScalar(arr);
+		if (!arr.length) {
+			return this.subScalar(arr);
+		}
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		return this.add(arr.mulScalar(-1));
 	};
 	Array.prototype.mul = function (arr) {
-		if (!arr.length) return this.mulScalar(arr);
+		if (!arr.length) {
+			return this.mulScalar(arr);
+		}
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var arr2 = [];
 		this.forEach(function (el, i) { if (el.length) arr2[i] = el.mul(arr[i]); else arr2[i] = el * arr[i]; });
 		return arr2;
 	};
 	Array.prototype.div = function (arr) {
-		if (!arr.length) return this.divScalar(arr);
+		if (!arr.length) {
+			return this.divScalar(arr);
+		}
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var arr2 = [];
 		this.forEach(function (el, i) { if (el.length) arr2[i] = el.div(arr[i]); else arr2[i] = el / arr[i]; });
@@ -137,30 +157,34 @@
 		return Math.sqrt(this.squareDistance(arr));
 	};
 	Array.prototype.dims = function () {
-		if (this.length === 0) return [0, 0];
-		return [this.length,this[0].length || 1];
+		if (this.length === 0) {
+			return [0, 0];
+		}
+		return [this.length, this[0].length || 1];
 	};
 	Array.prototype.flatten = function () {
 		var i, v2 = [];
 		for (i = 0; i < this.length; i++) {
-			if (this[i].length == 1) v2[i] = this[i][0];
+			if (this[i].length === 1) v2[i] = this[i][0];
 			else v2[i] = this[i];
 		}
 		return v2;
 	};
 	Array.prototype.transpose = function () {
-		if (this.length === 0) return [];
-			var i, j, M2 = [];
-			M2[0] = [];
-			for (i = 0; i < this.length; i++) {
-				if (!this[i].length)
-				M2[0][i] = this[i];
-				else
-					for (j = 0; j < this[i].length; j++) {
-						if (!M2[j]) M2[j] = [];
-						M2[j][i] = this[i][j];
-					}
-			}
+		if (this.length === 0) {
+			return [];
+		}
+		var i, j, M2 = [];
+		M2[0] = [];
+		for (i = 0; i < this.length; i++) {
+			if (!this[i].length)
+			M2[0][i] = this[i];
+			else
+				for (j = 0; j < this[i].length; j++) {
+					if (!M2[j]) M2[j] = [];
+					M2[j][i] = this[i][j];
+				}
+		}
 		return M2;
 	};
 	Array.prototype.toMatrix = function () {
@@ -169,7 +193,7 @@
 	Array.prototype.matProd = Array.prototype.x = function (M2) {
 		var i, j, M3 = [], M1 = this.toMatrix();
 		var M2_ = M2.transpose();
-		if (M1.dims()[1] != M2.dims()[0]) throw 'matProd: Dimension mismatch ('+M1.dims()[1]+' != '+M2.dims()[0]+')';
+		if (M1.dims()[1] !== M2.dims()[0]) throw 'matProd: Dimension mismatch ('+M1.dims()[1]+' !== '+M2.dims()[0]+')';
 			for (i = 0; i < M1.length; i++) {
 				M3[i] = [];
 				for (j = 0; j < M2_.length; j++) {
@@ -179,8 +203,12 @@
 		return M3.flatten();
 	};
 	Array.prototype.inspect = function () {
-		if (this.dims()[1] == 1) return this.toString();
-		else if (this.dims()[0] == 1) return this[0].toString();
+		if (this.dims()[1] === 1) {
+			return this.toString();
+		}
+		else if (this.dims()[0] === 1) {
+			return this[0].toString();
+		}
 		else {
 			var i, s = '';
 			for (i = 0; i < this.length; i++) {
@@ -234,7 +262,7 @@
 		for (i = 0; i < n; i++) {
 			arr[i] = [];
 			for (j = 0; j < m; j++) {
-				if (i == j) arr[i][j] = 1;
+				if (i === j) arr[i][j] = 1;
 				else arr[i][j] = 0;
 			}
 		}
