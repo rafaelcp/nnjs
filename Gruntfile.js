@@ -14,9 +14,9 @@ module.exports = function (grunt) {
         ]
     };
     grunt.initConfig(gruntConfig);
-    grunt.registerTask('travis', 'jshint');
+    grunt.registerTask('test', 'qunit:src');
+    grunt.registerTask('travis', ['jshint','test']);
     gruntConfig.qunit = {
         src: ['tests/testArray.html']
     };
-    grunt.registerTask('test', 'qunit:src');
 };
