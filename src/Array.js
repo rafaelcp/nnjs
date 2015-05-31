@@ -1,6 +1,6 @@
 //TODO: rightTriangular, eig, inv, pinv, det, chol, lu, qr, trace, diag, getCol, cond, rcond, svd
 (function () {
-	'USE STRICT';
+	'use strict';
 	Array.prototype.max = function (arr) {
 		if (!!arr) {
 			if (arr.length !== this.length) {
@@ -103,7 +103,7 @@
 			throw 'Argument must be a scalar';
 		}
 		var arr = [];
-		this.forEach(function (el, i) { if (el.length) arr[i] = el.addScalar(x); else arr[i] = el + x; });
+		this.forEach(function (el, i) { if (el.length) { arr[i] = el.addScalar(x); } else { arr[i] = el + x; } } );
 		return arr;
 	};
 	Array.prototype.subScalar = function (x) {
@@ -117,14 +117,14 @@
 			throw 'Argument must be a scalar';
 		}
 		var arr = [];
-		this.forEach(function (el, i) { if (el.length) arr[i] = el.mulScalar(x); else arr[i] = el * x; });
+		this.forEach(function (el, i) { if (el.length) { arr[i] = el.mulScalar(x); } else { arr[i] = el * x; } } );
 		return arr;
 	};
 	Array.prototype.divScalar = function (x) {
 		if (x.length) {
 			throw 'Argument must be a scalar';
 		}
-		return this.mulScalar(1/x);
+		return this.mulScalar(1 / x);
 	};
 	Array.prototype.normalize = function () {
 		return this.divScalar(this.norm());
@@ -137,7 +137,7 @@
 			throw 'Array sizes must match';
 		}
 		var arr2 = [];
-		this.forEach(function (el, i) { if (el.length) arr2[i] = el.add(arr[i]); else arr2[i] = el + arr[i]; });
+		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.add(arr[i]); } else { arr2[i] = el + arr[i]; } } );
 		return arr2;
 	};
 	Array.prototype.sub = function (arr) {
@@ -157,7 +157,7 @@
 			throw 'Array sizes must match';
 		}
 		var arr2 = [];
-		this.forEach(function (el, i) { if (el.length) arr2[i] = el.mul(arr[i]); else arr2[i] = el * arr[i]; });
+		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.mul(arr[i]); } else { arr2[i] = el * arr[i]; } } );
 		return arr2;
 	};
 	Array.prototype.div = function (arr) {
@@ -168,7 +168,7 @@
 			throw 'Array sizes must match';
 		}
 		var arr2 = [];
-		this.forEach(function (el, i) { if (el.length) arr2[i] = el.div(arr[i]); else arr2[i] = el / arr[i]; });
+		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.div(arr[i]); } else { arr2[i] = el / arr[i]; } } );
 		return arr2;
 	};
 	Array.prototype.squareDistance = function (arr) {
@@ -222,6 +222,7 @@
 		var i, j, M3 = [], M1 = this.toMatrix();
 		var M2_ = M2.transpose();
 		if (M1.dims()[1] !== M2.dims()[0]) {
+			throw 'matProd: Dimension mismatch (' + M1.dims()[1] + ' !==' + M2.dims()[0] + ')';
 		}
 		for (i = 0; i < M1.length; i++) {
 			M3[i] = [];
@@ -303,8 +304,12 @@
 		for (i = 0; i < n; i++) {
 			arr[i] = [];
 			for (j = 0; j < m; j++) {
-				if (i === j) arr[i][j] = 1;
-				else arr[i][j] = 0;
+				if (i === j) {
+					arr[i][j] = 1;
+				}
+				else {
+					arr[i][j] = 0;
+				}
 			}
 		}
 		return arr;
