@@ -103,7 +103,7 @@
 			throw 'Argument must be a scalar';
 		}
 		var arr = [];
-		this.forEach(function (el, i) { if (el.length) { arr[i] = el.addScalar(x); } else { arr[i] = el + x; } } );
+		this.forEach(function (el, i) { if (el.length) { arr[i] = el.addScalar(x); } else { arr[i] = el + x; } });
 		return arr;
 	};
 	Array.prototype.subScalar = function (x) {
@@ -117,7 +117,7 @@
 			throw 'Argument must be a scalar';
 		}
 		var arr = [];
-		this.forEach(function (el, i) { if (el.length) { arr[i] = el.mulScalar(x); } else { arr[i] = el * x; } } );
+		this.forEach(function (el, i) { if (el.length) { arr[i] = el.mulScalar(x); } else { arr[i] = el * x; } });
 		return arr;
 	};
 	Array.prototype.divScalar = function (x) {
@@ -137,7 +137,7 @@
 			throw 'Array sizes must match';
 		}
 		var arr2 = [];
-		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.add(arr[i]); } else { arr2[i] = el + arr[i]; } } );
+		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.add(arr[i]); } else { arr2[i] = el + arr[i]; } });
 		return arr2;
 	};
 	Array.prototype.sub = function (arr) {
@@ -157,7 +157,7 @@
 			throw 'Array sizes must match';
 		}
 		var arr2 = [];
-		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.mul(arr[i]); } else { arr2[i] = el * arr[i]; } } );
+		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.mul(arr[i]); } else { arr2[i] = el * arr[i]; } });
 		return arr2;
 	};
 	Array.prototype.div = function (arr) {
@@ -168,7 +168,7 @@
 			throw 'Array sizes must match';
 		}
 		var arr2 = [];
-		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.div(arr[i]); } else { arr2[i] = el / arr[i]; } } );
+		this.forEach(function (el, i) { if (el.length) { arr2[i] = el.div(arr[i]); } else { arr2[i] = el / arr[i]; } });
 		return arr2;
 	};
 	Array.prototype.squareDistance = function (arr) {
@@ -314,34 +314,34 @@
 		}
 		return arr;
 	};
-	Object.defineProperty(Array.prototype,'max',{enumerable:false});
-	Object.defineProperty(Array.prototype,'argmax',{enumerable:false});
-	Object.defineProperty(Array.prototype,'min',{enumerable:false});
-	Object.defineProperty(Array.prototype,'argmin',{enumerable:false});
-	Object.defineProperty(Array.prototype,'sum',{enumerable:false});
-	Object.defineProperty(Array.prototype,'mean',{enumerable:false});
-	Object.defineProperty(Array.prototype,'median',{enumerable:false});
-	Object.defineProperty(Array.prototype,'var',{enumerable:false});
-	Object.defineProperty(Array.prototype,'stddev',{enumerable:false});
-	Object.defineProperty(Array.prototype,'dot',{enumerable:false});
-	Object.defineProperty(Array.prototype,'outer',{enumerable:false});
-	Object.defineProperty(Array.prototype,'norm',{enumerable:false});
-	Object.defineProperty(Array.prototype,'addScalar',{enumerable:false});
-	Object.defineProperty(Array.prototype,'subScalar',{enumerable:false});
-	Object.defineProperty(Array.prototype,'mulScalar',{enumerable:false});
-	Object.defineProperty(Array.prototype,'divScalar',{enumerable:false});
-	Object.defineProperty(Array.prototype,'normalize',{enumerable:false});
-	Object.defineProperty(Array.prototype,'add',{enumerable:false});
-	Object.defineProperty(Array.prototype,'sub',{enumerable:false});
-	Object.defineProperty(Array.prototype,'mul',{enumerable:false});
-	Object.defineProperty(Array.prototype,'div',{enumerable:false});
-	Object.defineProperty(Array.prototype,'squareDistance',{enumerable:false});
-	Object.defineProperty(Array.prototype,'distance',{enumerable:false});
-	Object.defineProperty(Array.prototype,'dims',{enumerable:false});
-	Object.defineProperty(Array.prototype,'flatten',{enumerable:false});
-	Object.defineProperty(Array.prototype,'transpose',{enumerable:false});
-	Object.defineProperty(Array.prototype,'toMatrix',{enumerable:false});
-	Object.defineProperty(Array.prototype,'matProd',{enumerable:false});
-	Object.defineProperty(Array.prototype,'x',{enumerable:false});
-	Object.defineProperty(Array.prototype,'inspect',{enumerable:false});
+	Object.defineProperty(Array.prototype, 'max', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'argmax', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'min', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'argmin', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'sum', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'mean', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'median', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'var', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'stddev', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'dot', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'outer', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'norm', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'addScalar', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'subScalar', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'mulScalar', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'divScalar', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'normalize', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'add', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'sub', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'mul', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'div', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'squareDistance', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'distance', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'dims', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'flatten', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'transpose', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'toMatrix', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'matProd', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'x', {enumerable: false});
+	Object.defineProperty(Array.prototype, 'inspect', {enumerable: false});
 })();
