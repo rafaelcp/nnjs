@@ -1,5 +1,5 @@
 'use strict';
-/* global Neuron: false */
+/* global Neuron: true */
 function Layer(n) {
 	this.neurons = [];
 	this.addNeuron = function (neuron) {
