@@ -1,5 +1,5 @@
 //TODO: rightTriangular, eig, inv, pinv, det, chol, lu, qr, trace, diag, getCol, cond, rcond, svd
-(function(){
+(function () {
 	'use strict';
 	Array.prototype.max = function (arr) {
 		if (!!arr) {
