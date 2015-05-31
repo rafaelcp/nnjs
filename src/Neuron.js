@@ -102,7 +102,7 @@ function Neuron(n) {
 		if (!this.W) {
 			this.randomize(inputs[0].length);
 		}
-		var i, ainput, output, err, grad = null, input, target, errs = [];
+		var i, ainput, output, grad = null, input, target, errs = [];
 		for (i = 0; i < inputs.length; i++) {
 			input = inputs[i];
 			target = targets[i];
@@ -127,7 +127,7 @@ function Neuron(n) {
 		}
 		return errs;
 		*/
-	}
+	};
 	this.propagate = function (input, ainput, output, target) {
 		return this.aggregate.dx(this.W, input).mul(this.errorFunction.d(output, target) * this.transfer.d(ainput, output));
 	};
@@ -193,10 +193,10 @@ Neuron.error.MAE.d = function (output, target) { return Math.sign(output - targe
 Neuron.error.crossent = function (output, target) {
 	var y = Math.max(0, Math.min(1, output));
 	var t = Math.max(0, Math.min(1, target));
-	return -(t * Math.log(Math.max(y,Number.EPSILON)) + (1 - t) * Math.log(Math.max(1 - y,Number.EPSILON)));
+	return -(t * Math.log(Math.max(y, Number.EPSILON)) + (1 - t) * Math.log(Math.max(1 - y, Number.EPSILON)));
 };
 Neuron.error.crossent.d = function (output, target) {
 	var y = Math.max(0, Math.min(1, output));
 	var t = Math.max(0, Math.min(1, target));
-	return (y - t) / Math.max(((1 - y) * y),Number.EPSILON);
+	return (y - t) / Math.max(((1 - y) * y), Number.EPSILON);
 };
