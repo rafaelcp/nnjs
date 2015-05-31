@@ -3,6 +3,7 @@ module.exports = function (grunt) {
     'use strict';
     var gruntConfig = {};
     grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-qunit');
     gruntConfig.jshint = {
         options: { bitwise: true, camelcase: true, curly: true, eqeqeq: true, forin: true, immed: true, asi: true, lastsemic: true, globalstrict: true,
           indent: 4, latedef: true, newcap: true, noarg: true, noempty: true, nonew: true, plusplus: false,
