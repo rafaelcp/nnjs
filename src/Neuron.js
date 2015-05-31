@@ -159,7 +159,7 @@ Neuron.transfer.cos.d = function (x) { return -Math.sin(x); };
 //Aggregation Functions
 Neuron.aggregation = {};
 
-Neuron.aggregation.dot = function (W, input) { return W.dot(input) };
+Neuron.aggregation.dot = function (W, input) { return W.dot(input); };
 Neuron.aggregation.dot.dw = function (W, input) { return input.slice(); };
 Neuron.aggregation.dot.dx = function (W, input) { return W.slice(); };
 
@@ -167,7 +167,7 @@ Neuron.aggregation.squareDistance = function (W, input) { return W.squareDistanc
 Neuron.aggregation.squareDistance.dw = function (W, input) { return W.sub(input).mul(2); };
 Neuron.aggregation.squareDistance.dx = function (W, input) { return input.sub(W).mul(2); };
 
-Neuron.aggregation.distance = function (W, input) { return W.distance(input) };
+Neuron.aggregation.distance = function (W, input) { return W.distance(input); };
 Neuron.aggregation.distance.dw = function (W, input) { return W.sub(input).div(W.distance(input)); };
 Neuron.aggregation.distance.dx = function (W, input) { return input.sub(W).div(W.distance(input)); };
 
