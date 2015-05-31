@@ -14,26 +14,26 @@ function Layer(n) {
 	}
 	this.activate = function (input) {
 		var activations = [];
-		this.neurons.forEach(function (el, i){ activations.push(el.activate(input)); });
+		this.neurons.forEach(function (el, i) { activations.push(el.activate(input)); });
 		return activations;
 	};
 	this.batchActivate = function (inputs) {
 		var activations = [];
-		this.neurons.forEach(function (el, i){ activations.push(el.batchActivate(inputs)); });
+		this.neurons.forEach(function (el, i) { activations.push(el.batchActivate(inputs)); });
 		return activations;
 	};
 	this.learn = function (input, targets) {
 		var errs = [];
-		this.neurons.forEach(function (el, i){ errs.push(el.learn(input, targets[i])); });
-		return errs;	
+		this.neurons.forEach(function (el, i) { errs.push(el.learn(input, targets[i])); });
+		return errs;
 	};
 	this.batchLearn = function (inputs, targets) {
 		var errs = [];
-		this.neurons.forEach(function (el, i){ errs.push(el.batchLearn(inputs, targets[i])); });
-		return errs;	
+		this.neurons.forEach(function (el, i) { errs.push(el.batchLearn(inputs, targets[i])); });
+		return errs;
 	};
 	this.setProperty = function (prop, value) {
-		this.neurons.forEach(function (el){ el[prop] = value; });
+		this.neurons.forEach(function (el) { el[prop] = value; });
 	};
 	this.setLearningRate = function (lr) {
 		this.setProperty('lr', lr);
