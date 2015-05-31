@@ -1,6 +1,6 @@
 {
   "name": "nnjs",
-  "version": "0.1",
+  "version": "0.1.1-1",
   "description": "Neural Network JavaScript Library",
   "author": "Rafael C.P. <rcpinto@inf.ufrgs.br>",
   "devDependencies": {
