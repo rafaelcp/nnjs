@@ -4,7 +4,7 @@
 	Array.prototype.max = function (arr) {
 		if (!!arr) {
 			if (arr.length !== this.length) throw 'Array sizes must match';
-			return this.map(function (el,i) { return Math.max(el,arr[i]); }); 
+			return this.map(function (el, i) { return Math.max(el, arr[i]); });
 		}
 		else {
 			if (this.length === 0) return null;
@@ -17,10 +17,10 @@
 	Array.prototype.min = function (arr) {
 		if (!!arr) {
 			if (arr.length !== this.length) throw 'Array sizes must match';
-				return this.map(function (el,i) { return Math.min(el,arr[i]); }); 
-			}
-			else {
-				if (this.length === 0) return null;
+			return this.map(function (el, i) { return Math.min(el, arr[i]); });
+		}
+		else {
+			if (this.length === 0) return null;
 			return Math.min.apply(null, this);
 		}
 	};
@@ -28,10 +28,10 @@
 		return this.indexOf(this.min());
 	};
 	Array.prototype.sum = function () {
-		return this.reduce(function (a,b) { return a + b; },0);
+		return this.reduce(function (a, b) { return a + b; }, 0);
 	};
 	Array.prototype.prod = function () {
-		return this.reduce(function (a,b) { return a * b; },1);
+		return this.reduce(function (a, b) { return a * b; }, 1);
 	};
 	Array.prototype.mean = function () {
 		if (this.length === 0) return null;
@@ -39,34 +39,34 @@
 	};
 	Array.prototype.median = function () {
 		if (this.length === 0) return null;
-			var sorted = this.sort();
-			if (this.length % 2 == 1) {
-			return sorted[Math.floor(this.length/2)];
+		var sorted = this.sort();
+		if (this.length % 2 == 1) {
+			return sorted[Math.floor(this.length / 2)];
 		}
 		else {
-			return sorted.slice(Math.floor(this.length/2)-1,Math.floor(this.length/2)+1).mean();
+			return sorted.slice(Math.floor(this.length / 2)-1,Math.floor(this.length / 2)+1).mean();
 		}
 	};
-	Array.prototype.var = function () {
+	Array.prototype.variance = function () {
 		if (this.length <= 1) return null;
 		var m = this.mean();
-		var sqdiffs = this.map(function (el) { return Math.pow(el - m,2); });
+		var sqdiffs = this.map(function (el) { return Math.pow(el - m, 2); });
 		return sqdiffs.sum() / (this.length - 1);
 	};
 	Array.prototype.stddev = function () {
 		if (this.length <= 1) return null;
-		return Math.sqrt(this.var());
+		return Math.sqrt(this.variance());
 	};
 	Array.prototype.dot = function (arr) {
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var result = 0;
-		this.forEach(function (el,i) { result += el * arr[i]; });
+		this.forEach(function (el, i) { result += el * arr[i]; });
 		return result;
 	};
 	Array.prototype.outer = function (arr) {
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var arr2 = [];
-		this.forEach(function (el,i) {
+		this.forEach(function (el, i) {
 			var j;
 			arr2[i] = [];
 			for (j = 0; j < arr.length; j++) {
@@ -81,7 +81,7 @@
 	Array.prototype.addScalar = function (x) {
 		if (x.length) throw 'Argument must be a scalar';
 		var arr = [];
-		this.forEach(function (el,i) { if (el.length) arr[i] = el.addScalar(x); else arr[i] = el + x; });
+		this.forEach(function (el, i) { if (el.length) arr[i] = el.addScalar(x); else arr[i] = el + x; });
 		return arr;
 	};
 	Array.prototype.subScalar = function (x) {
@@ -91,7 +91,7 @@
 	Array.prototype.mulScalar = function (x) {
 		if (x.length) throw 'Argument must be a scalar';
 		var arr = [];
-		this.forEach(function (el,i) { if (el.length) arr[i] = el.mulScalar(x); else arr[i] = el * x; });
+		this.forEach(function (el, i) { if (el.length) arr[i] = el.mulScalar(x); else arr[i] = el * x; });
 		return arr;
 	};
 	Array.prototype.divScalar = function (x) {
@@ -105,7 +105,7 @@
 		if (!arr.length) return this.addScalar(arr);
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var arr2 = [];
-		this.forEach(function (el,i) { if (el.length) arr2[i] = el.add(arr[i]); else arr2[i] = el + arr[i]; });
+		this.forEach(function (el, i) { if (el.length) arr2[i] = el.add(arr[i]); else arr2[i] = el + arr[i]; });
 		return arr2;
 	};
 	Array.prototype.sub = function (arr) {
@@ -117,15 +117,15 @@
 		if (!arr.length) return this.mulScalar(arr);
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var arr2 = [];
-		this.forEach(function (el,i) { if (el.length) arr2[i] = el.mul(arr[i]); else arr2[i] = el * arr[i]; });
+		this.forEach(function (el, i) { if (el.length) arr2[i] = el.mul(arr[i]); else arr2[i] = el * arr[i]; });
 		return arr2;
 	};
 	Array.prototype.div = function (arr) {
 		if (!arr.length) return this.divScalar(arr);
 		if (arr.length !== this.length) throw 'Array sizes must match';
 		var arr2 = [];
-		this.forEach(function (el,i) { if (el.length) arr2[i] = el.div(arr[i]); else arr2[i] = el / arr[i]; });
-		return arr2; 
+		this.forEach(function (el, i) { if (el.length) arr2[i] = el.div(arr[i]); else arr2[i] = el / arr[i]; });
+		return arr2;
 	};
 	Array.prototype.squareDistance = function (arr) {
 		if (arr.length !== this.length) throw 'Array sizes must match';
@@ -137,7 +137,7 @@
 		return Math.sqrt(this.squareDistance(arr));
 	};
 	Array.prototype.dims = function () {
-		if (this.length === 0) return [0,0];
+		if (this.length === 0) return [0, 0];
 		return [this.length,this[0].length || 1];
 	};
 	Array.prototype.flatten = function () {
