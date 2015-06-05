@@ -24,6 +24,23 @@
 	assert.strictEqual(arr2.length,3);
 	assert.strictEqual(arr3.length,3);
   });
+  QUnit.test("array enumeration random", function( assert ) {
+    var i, lines, arr, arr2, arr3;
+    for (lines = 1; lines <= 100; lines++) {
+		arr = Array.random(lines,1);
+		arr2 = [];
+		arr3 = [];
+		for (i in arr) {
+			arr2[i] = arr[i];
+		}
+		arr.forEach(function(el,i){arr3[i] = el});
+		assert.deepEqual(arr,arr2);
+		assert.deepEqual(arr,arr3);
+		assert.strictEqual(arr.length,lines);
+		assert.strictEqual(arr2.length,lines);
+		assert.strictEqual(arr3.length,lines);
+	}
+  });
   QUnit.test("max unary", function( assert ) {
 	assert.strictEqual([-3,-2,-1,0,1,2,3].max(),3);
 	assert.strictEqual([3,2,1,0,-3,-2,-1].max(),3);
@@ -32,6 +49,7 @@
   });
   QUnit.test("max binary", function( assert ) {
 	assert.deepEqual([-3,-2,-1,0,1,2,3].max([3,2,1,0,-1,-2,-3]),[3,2,1,0,1,2,3]);
+	assert.deepEqual([NaN,-2,-1,NaN,1,2,NaN].max([3,NaN,1,0,NaN,-2,-3]),[3,-2,1,0,1,2,-3]);
 	assert.deepEqual([3,2,1,0,-1,-2,-3].max([-3,-2,-1,0,1,2,3]),[3,2,1,0,1,2,3]);
 	assert.throws(function(){[3,2,1,0,-1,-2,-3].max([])});
 	assert.throws(function(){[].max([-3,-2,-1,0,1,2,3])});
@@ -46,6 +64,7 @@
   QUnit.test("min binary", function( assert ) {
 	assert.deepEqual([-3,-2,-1,0,1,2,3].min([3,2,1,0,-1,-2,-3]),[-3,-2,-1,0,-1,-2,-3]);
 	assert.deepEqual([3,2,1,0,-1,-2,-3].min([-3,-2,-1,0,1,2,3]),[-3,-2,-1,0,-1,-2,-3]);
+	assert.deepEqual([NaN,2,1,NaN,-1,-2,NaN].min([-3,NaN,-1,0,NaN,2,3]),[-3,2,-1,0,-1,-2,3]);
 	assert.throws(function(){[3,2,1,0,-1,-2,-3].min([])});
 	assert.throws(function(){[].min([-3,-2,-1,0,1,2,3])});
 	assert.deepEqual([].min([]),[]);
@@ -64,14 +83,31 @@
   });
   QUnit.test("sum", function( assert ) {
 	assert.strictEqual([1,2,3,4].sum(),10);
+	assert.strictEqual([1,2,NaN,4].sum(),7);
+	assert.strictEqual([NaN,2,NaN,NaN].sum(),2);
+	assert.strictEqual([NaN,NaN,NaN,NaN].sum(),0);
 	assert.strictEqual([-1,-2,-3,-4].sum(),-10);
 	assert.strictEqual([-3,-2,-1,0,1,2,3].sum(),0);
 	assert.strictEqual([3,2,1,0,-3,-2,-1].sum(),0);
 	assert.strictEqual([123].sum(),123);
 	assert.strictEqual([].sum(),0);
   });
+  QUnit.test("count", function( assert ) {
+	assert.strictEqual([1,2,3,4].count(),4);
+	assert.strictEqual([1,2,NaN,4].count(),3);
+	assert.strictEqual([NaN,2,NaN,NaN].count(),1);
+	assert.strictEqual([NaN,NaN,NaN,NaN].count(),0);
+	assert.strictEqual([-1,-2,-3,-4].count(),4);
+	assert.strictEqual([-3,-2,-1,0,1,2,3].count(),7);
+	assert.strictEqual([3,2,1,0,-3,-2,-1].count(),7);
+	assert.strictEqual([123].count(),1);
+	assert.strictEqual([].count(),0);
+  });  
   QUnit.test("prod", function( assert ) {
 	assert.strictEqual([1,2,3,4].prod(),24);
+	assert.strictEqual([NaN,2,3,4].prod(),24);
+	assert.strictEqual([NaN,2,NaN,4].prod(),8);
+	assert.strictEqual([NaN,NaN,NaN,NaN].prod(),1);
 	assert.strictEqual([-1,-2,-3,-4].prod(),24);
 	assert.strictEqual([-3,-2,-1,0,1,2,3].prod(),0);
 	assert.strictEqual([3,2,1,0,-3,-2,-1].prod(),0);
@@ -109,6 +145,8 @@
 	assert.strictEqual([123].variance(),null);
 	assert.strictEqual([].variance(),null);
 	assert.strictEqual([1].variance(),null);
+	assert.strictEqual([NaN].variance(),null);
+	assert.strictEqual([1,NaN].variance(),null);
   });
   QUnit.test("stddev", function( assert ) {
 	assert.strictEqual([1,2,3,4].stddev(),Math.sqrt(5/3));
@@ -120,11 +158,33 @@
 	assert.strictEqual([123].stddev(),null);
 	assert.strictEqual([].stddev(),null);
 	assert.strictEqual([1].stddev(),null);
+	assert.strictEqual([NaN].stddev(),null);
+	assert.strictEqual([1,NaN].stddev(),null);
+  });
+  QUnit.test("stats random", function( assert ) {
+    var lines, arr;
+    for (lines = 1; lines <= 100; lines++) {
+		arr = Array.random(lines,1);
+		//arr[Math.floor(Math.random()*arr.length)] = NaN;
+		assert.ok(arr.max() >= arr.min());
+		assert.ok(arr.max() >= arr.mean());
+		assert.ok(arr.max() >= arr.median());
+		assert.ok(arr.min() <= arr.max());
+		assert.ok(arr.min() <= arr.mean());
+		assert.ok(arr.min() <= arr.median());
+		assert.ok(arr.sum() >= arr.max());
+		assert.ok(arr.sum() >= arr.min());
+		assert.ok(arr.sum() >= arr.mean());
+		assert.ok(arr.sum() >= arr.median());
+		assert.ok(arr.max() === arr[arr.argmax()]);
+		assert.ok(arr.min() === arr[arr.argmin()]);
+	}
   });
   QUnit.test("dot", function( assert ) {
 	assert.strictEqual([1,0].dot([0,1]),0);
 	assert.strictEqual([1,0,0].dot([0,1,0]),0);
 	assert.strictEqual([1,2].dot([3,4]),11);
+	assert.strictEqual([1,NaN,3].dot([NaN,5,6]),18);
 	assert.throws(function(){[].dot([0,1])});
 	assert.throws(function(){[1,0].dot([])});
 	assert.throws(function(){[1,0].dot([1,2,3])});
@@ -146,6 +206,13 @@
 	assert.deepEqual([1,2,3].normalize(),[1/Math.sqrt(14),2/Math.sqrt(14),3/Math.sqrt(14)]);
 	assert.deepEqual([1,0,3].normalize(),[1/Math.sqrt(10),0,3/Math.sqrt(10)]);
 	assert.deepEqual([].normalize(),[]);
+  });
+  QUnit.test("normalize random", function( assert ) {
+    var lines, arr;
+    for (lines = 1; lines <= 1000; lines++) {
+		arr = Array.random(lines, 1);
+		assert.ok(Math.abs(arr.normalize().norm() - 1) < 1e-14);
+	}
   });
   QUnit.test("addScalar", function( assert ) {
 	assert.deepEqual([1,2,3].addScalar(1),[2,3,4]);

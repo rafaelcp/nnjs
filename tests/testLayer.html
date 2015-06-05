@@ -1,38 +1,84 @@
-<meta charset="utf-8">
-<style>
-body {
- font-family: Arial;
-}
-table, img {
- margin: 1em;
- float: left;
-}
-table, td, th {
- border: 1px solid black;
- text-align: center;
-}
-img {
- display: block;
-}
-td.correct:after {
- content: ' ✓';
- color: green;
-}
-td.wrong:after {
- content: ' ✗';
- color: red;
-}
-th, td {
- padding: 0.5em;
-}
-h2 {
- clear: both;
-}
-</style>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Layer Test</title>
+  <link rel="stylesheet" href="qunit-1.18.0.css">
+	<style>
+	body {
+	 font-family: Arial;
+	}
+	table, img {
+	 margin: 1em;
+	 float: left;
+	}
+	table, td, th {
+	 border: 1px solid black;
+	 text-align: center;
+	}
+	img {
+	 display: block;
+	}
+	td.correct:after {
+	 content: ' ✓';
+	 color: green;
+	}
+	td.wrong:after {
+	 content: ' ✗';
+	 color: red;
+	}
+	th, td {
+	 padding: 0.5em;
+	}
+	h2 {
+	 clear: both;
+	}
+	</style>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="qunit-1.18.0.js"></script>
+  <script src="blanket.min.js"></script>
+
 <script src="../src/Array.js"></script>
 <script src="../src/Neuron.js"></script>
-<script src="../src/Layer.js"></script>
+<script src="../src/Layer.js" data-cover></script>
 <h1>Neuron Layer Test</h1>
+<script>
+QUnit.test("constructor", function( assert ) {
+	expect(0);
+});
+QUnit.test("add neuron", function( assert ) {
+	expect(0);
+});
+QUnit.test("remove neuron", function( assert ) {
+	expect(0);
+});
+QUnit.test("activate", function( assert ) {
+	expect(0);
+});
+QUnit.test("batch activate", function( assert ) {
+	expect(0);
+});
+QUnit.test("learn", function( assert ) {
+	expect(0);
+});
+QUnit.test("batch learn", function( assert ) {
+	expect(0);
+});
+QUnit.test("set property", function( assert ) {
+	expect(0);
+});
+QUnit.test("set learning rate", function( assert ) {
+	expect(0);
+});
+QUnit.test("set momentum", function( assert ) {
+	expect(0);
+});
+
+</script>
+
 <h2>Simultaneous OR + AND</h2>
 
 <details>

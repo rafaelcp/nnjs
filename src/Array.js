@@ -6,7 +6,7 @@
 			if (arr.length !== this.length) {
 				throw 'Array sizes must match';
 			}
-			return this.map(function (el, i) { return Math.max(el, arr[i]); });
+			return this.map(function (el, i) { if (isNaN(el)) return arr[i]; if (isNaN(arr[i])) return el; return Math.max(el, arr[i]); });
 		}
 		else {
 			if (this.length === 0) {
@@ -23,7 +23,7 @@
 			if (arr.length !== this.length) {
 				throw 'Array sizes must match';
 			}
-			return this.map(function (el, i) { return Math.min(el, arr[i]); });
+			return this.map(function (el, i) { if (isNaN(el)) return arr[i]; if (isNaN(arr[i])) return el; return Math.min(el, arr[i]); });
 		}
 		else {
 			if (this.length === 0) {
@@ -36,16 +36,19 @@
 		return this.indexOf(this.min());
 	};
 	Array.prototype.sum = function () {
-		return this.reduce(function (a, b) { return a + b; }, 0);
+		return this.reduce(function (a, b) { return a + (b || 0); }, 0);
 	};
 	Array.prototype.prod = function () {
-		return this.reduce(function (a, b) { return a * b; }, 1);
+		return this.reduce(function (a, b) { return a * (isNaN(b) ? 1 : b); }, 1);
+	};
+	Array.prototype.count = function () {
+		return this.reduce(function (a, b) { return a + (isNaN(b) ? 0 : 1); }, 0);
 	};
 	Array.prototype.mean = function () {
-		if (this.length === 0) {
+		if (this.count() === 0) {
 			return null;
 		}
-		return this.sum() / this.length;
+		return this.sum() / this.count();
 	};
 	Array.prototype.median = function () {
 		if (this.length === 0) {
@@ -60,15 +63,15 @@
 		}
 	};
 	Array.prototype.variance = function () {
-		if (this.length <= 1) {
+		if (this.count() <= 1) {
 			return null;
 		}
 		var m = this.mean();
 		var sqdiffs = this.map(function (el) { return Math.pow(el - m, 2); });
-		return sqdiffs.sum() / (this.length - 1);
+		return sqdiffs.sum() / (this.count() - 1);
 	};
 	Array.prototype.stddev = function () {
-		if (this.length <= 1) {
+		if (this.count() <= 1) {
 			return null;
 		}
 		return Math.sqrt(this.variance());
@@ -78,7 +81,7 @@
 			throw 'Array sizes must match';
 		}
 		var result = 0;
-		this.forEach(function (el, i) { result += el * arr[i]; });
+		this.forEach(function (el, i) { if (!isNaN(el) && !isNaN(arr[i])) result += el * arr[i]; });
 		return result;
 	};
 	Array.prototype.outer = function (arr) {

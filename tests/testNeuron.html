@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Neuron Test</title>
+  <link rel="stylesheet" href="qunit-1.18.0.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="qunit-1.18.0.js"></script>
+  <script src="blanket.min.js"></script>
+  <script src="../src/Array.js"></script>
+  <script src="../src/Neuron.js" data-cover></script>  
 <style>
 table {
  margin: auto;
@@ -6,8 +20,143 @@ table, td, th {
  border: 1px solid black;
 }
 </style>
-<script src="../src/Array.js"></script>
-<script src="../src/Neuron.js"></script>
+<h1>Neuron Test</h1>
+
+<script>
+QUnit.test("constructor", function( assert ) {
+	var neuron = new Neuron();
+	assert.strictEqual(neuron.W.length,0);
+	assert.strictEqual(neuron.prevChange.length,0);
+	neuron = new Neuron(10);
+	assert.strictEqual(neuron.W.length,10);
+	assert.strictEqual(neuron.prevChange.length,10);	
+});
+QUnit.test("randomize", function( assert ) {
+	var neuron = new Neuron();
+	neuron.randomize(10);
+	assert.strictEqual(neuron.W.length,10);
+	assert.strictEqual(neuron.prevChange.length,10);
+	neuron = new Neuron(10);
+	neuron.randomize(20);
+	assert.strictEqual(neuron.W.length,20);
+	assert.strictEqual(neuron.prevChange.length,20);	
+});
+QUnit.test("activate", function( assert ) {
+	expect(0);
+});
+QUnit.test("batch activate", function( assert ) {
+	expect(0);
+});
+QUnit.test("grad", function( assert ) {
+	expect(0);
+});
+QUnit.test("learn", function( assert ) {
+	expect(0);
+});
+QUnit.test("batch learn", function( assert ) {
+	expect(0);
+});
+QUnit.test("cost", function( assert ) {
+	expect(0);
+});
+QUnit.test("check", function( assert ) {
+	expect(0);
+});
+QUnit.test("batch check", function( assert ) {
+	expect(0);
+});
+QUnit.test("propagate", function( assert ) {
+	expect(0);
+});
+QUnit.test("identity", function( assert ) {
+	expect(0);
+});
+QUnit.test("identity derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("tanh", function( assert ) {
+	expect(0);
+});
+QUnit.test("tanh derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("logistic", function( assert ) {
+	expect(0);
+});
+QUnit.test("logistic derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("relu", function( assert ) {
+	expect(0);
+});
+QUnit.test("relu derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("gaussian", function( assert ) {
+	expect(0);
+});
+QUnit.test("gaussian derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("sine", function( assert ) {
+	expect(0);
+});
+QUnit.test("sine derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("cos", function( assert ) {
+	expect(0);
+});
+QUnit.test("cos derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("dot", function( assert ) {
+	expect(0);
+});
+QUnit.test("dot derivative wrt w", function( assert ) {
+	expect(0);
+});
+QUnit.test("dot derivative wrt x", function( assert ) {
+	expect(0);
+});
+QUnit.test("squared distance", function( assert ) {
+	expect(0);
+});
+QUnit.test("squared distance derivative wrt w", function( assert ) {
+	expect(0);
+});
+QUnit.test("squared distance derivative wrt x", function( assert ) {
+	expect(0);
+});
+QUnit.test("distance", function( assert ) {
+	expect(0);
+});
+QUnit.test("distance derivative wrt w", function( assert ) {
+	expect(0);
+});
+QUnit.test("distance derivative wrt x", function( assert ) {
+	expect(0);
+});
+QUnit.test("MSE", function( assert ) {
+	expect(0);
+});
+QUnit.test("MSE derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("MAE", function( assert ) {
+	expect(0);
+});
+QUnit.test("MAE derivative", function( assert ) {
+	expect(0);
+});
+QUnit.test("cross-entropy", function( assert ) {
+	expect(0);
+});
+QUnit.test("cross-entropy derivative", function( assert ) {
+	expect(0);
+});
+</script>
+
 
 <table id="axt">
 <caption>Aggregation X Transfer</caption>
@@ -26,7 +175,7 @@ for (var aggregation in Neuron.aggregation) {
 	}
 }
 
-for (var k = 0; k < 10; k++) {
+for (var k = 0; k < 1; k++) {
 	console.info('Iteration '+k);
 	for (var aggregation in Neuron.aggregation) {
 		for (var transfer in Neuron.transfer) {
@@ -88,7 +237,7 @@ for (var k = 0; k < 10; k++) {
 					var targets = [];
 					for (var i = 0; i < n; i++) {
 						var datum = Array.random(d,1).mul(scale);
-						datum[n-1] = 1;
+						datum[d-1] = 1;
 						inputs.push(datum);
 						targets.push(Math.random() * scale);
 					}

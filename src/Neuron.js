@@ -8,6 +8,8 @@ function Neuron(n) {
 	this.transfer = Neuron.transfer.identity;
 	this.aggregate = Neuron.aggregation.dot;
 	this.errorFunction = Neuron.error.MSE;
+	this.W = [];
+	this.prevChange = [];
 	this.randomize = function (n) {
 		this.prevChange = Array.zeros(n);
 		this.W = Array.random(n, 1).mul(2).sub(1).div(Math.sqrt(n));
@@ -16,7 +18,7 @@ function Neuron(n) {
 		this.randomize(n);
 	}
 	this.activate = function (input) {
-		if (!this.W) {
+		if (!this.W || this.W.length == 0) {
 			this.randomize(input.length);
 		}
 		return this.transfer(this.aggregate(this.W, input));
@@ -32,7 +34,7 @@ function Neuron(n) {
 		return this.aggregate.dw(W, input).mul(this.errorFunction.d(output, target) * this.transfer.d(ainput, output));
 	};
 	this.learn = function (input, target) {
-		if (!this.W) {
+		if (!this.W || this.W.length == 0) {
 			this.randomize(input.length);
 		}
 		var ainput = this.aggregate(this.W, input);
@@ -52,7 +54,7 @@ function Neuron(n) {
 		return this.errorFunction(output0, target);
 	};
 	this.check = function (input, target) {
-		if (!this.W) {
+		if (!this.W || this.W.length == 0) {
 			this.randomize(input.length);
 		}
 		var i;
@@ -76,7 +78,7 @@ function Neuron(n) {
 		return [grad, numGrad];
 	};
 	this.batchCheck = function (inputs, targets) {
-		if (!this.W) {
+		if (!this.W || this.W.length == 0) {
 			this.randomize(inputs[0].length);
 		}
 		var i, grad, numGrad, r;
@@ -99,9 +101,10 @@ function Neuron(n) {
 	};
 
 	this.batchLearn = function (inputs, targets) {
-		if (!this.W) {
+		if (!this.W || this.W.length == 0) {
 			this.randomize(inputs[0].length);
 		}
+		if (inputs[0].length != this.W.length) throw 'Incorrect number of dimensions for the input data (is '+inputs[0].length+', should be '+this.W.length+')';
 		var i, ainput, output, grad = null, input, target, errs = [];
 		for (i = 0; i < inputs.length; i++) {
 			input = inputs[i];
