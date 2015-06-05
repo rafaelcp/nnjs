@@ -104,7 +104,9 @@ function Neuron(n) {
 		if (!this.W || this.W.length === 0) {
 			this.randomize(inputs[0].length);
 		}
-		if (inputs[0].length !== this.W.length) throw 'Incorrect number of dimensions for the input data (is ' + inputs[0].length + ', should be ' + this.W.length + ')';
+		if (inputs[0].length !== this.W.length) {
+			throw 'Incorrect number of dimensions for the input data (is ' + inputs[0].length + ', should be ' + this.W.length + ')';
+		}
 		var i, ainput, output, grad = null, input, target, errs = [];
 		for (i = 0; i < inputs.length; i++) {
 			input = inputs[i];

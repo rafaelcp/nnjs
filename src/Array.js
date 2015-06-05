@@ -6,7 +6,7 @@
 			if (arr.length !== this.length) {
 				throw 'Array sizes must match';
 			}
-			return this.map(function (el, i) { if (isNaN(el)) { return arr[i]; }; if (isNaN(arr[i])) { return el; }; return Math.max(el, arr[i]); });
+			return this.map(function (el, i) { if (isNaN(el)) { return arr[i]; } if (isNaN(arr[i])) { return el; } return Math.max(el, arr[i]); });
 		}
 		else {
 			if (this.length === 0) {
@@ -23,7 +23,7 @@
 			if (arr.length !== this.length) {
 				throw 'Array sizes must match';
 			}
-			return this.map(function (el, i) { if (isNaN(el)) { return arr[i]; }; if (isNaN(arr[i])) { return el; }; return Math.min(el, arr[i]); });
+			return this.map(function (el, i) { if (isNaN(el)) { return arr[i]; } if (isNaN(arr[i])) { return el; } return Math.min(el, arr[i]); });
 		}
 		else {
 			if (this.length === 0) {
@@ -81,7 +81,7 @@
 			throw 'Array sizes must match';
 		}
 		var result = 0;
-		this.forEach(function (el, i) { if (!isNaN(el) && !isNaN(arr[i])) { result += el * arr[i]; }; } );
+		this.forEach(function (el, i) { if (!isNaN(el) && !isNaN(arr[i])) { result += el * arr[i]; } } );
 		return result;
 	};
 	Array.prototype.outer = function (arr) {
