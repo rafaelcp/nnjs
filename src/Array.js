@@ -81,7 +81,7 @@
 			throw 'Array sizes must match';
 		}
 		var result = 0;
-		this.forEach(function (el, i) { if (!isNaN(el) && !isNaN(arr[i])) { result += el * arr[i]; } } );
+		this.forEach(function (el, i) { if (!isNaN(el) && !isNaN(arr[i])) { result += el * arr[i]; } });
 		return result;
 	};
 	Array.prototype.outer = function (arr) {
