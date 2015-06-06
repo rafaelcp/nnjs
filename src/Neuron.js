@@ -236,7 +236,7 @@ Neuron.error.MSE.d = function (output, target, error) {
 	if (error === undefined) {
 		error = output - target;
 	}
-	return error; 
+	return error;
 };
 Neuron.error.MAE = function (output, target, error) {
 	if (error === undefined) {
