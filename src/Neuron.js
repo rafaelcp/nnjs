@@ -118,7 +118,7 @@ function Neuron(n) {
 			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of errors (' + errors.length + ').';
 		}
 		if (!!errors && errors[0].length) {
-				throw 'Must have only 1 error per input, has ' + errors[0].length + '.';
+			throw 'Must have only 1 error per input, has ' + errors[0].length + '.';
 		}
 		var i, ainput, output, grad = null, input, target, error, errs = [];
 		for (i = 0; i < inputs.length; i++) {
@@ -156,7 +156,7 @@ function Neuron(n) {
 			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of gradients (' + grads.length + ').';
 		}
 		if (!!grads && grads[0].length) {
-				throw 'Must have only 1 gradient per input, has ' + grads[0].length + '.';
+			throw 'Must have only 1 gradient per input, has ' + grads[0].length + '.';
 		}
 		var i, signals = [];
 		for (i = 0; i < inputs.length; i++) {
@@ -226,24 +226,23 @@ Neuron.error.none = function (output, target, error) {
 Neuron.error.none.d = function (output, target, error) {
 	return -error;
 }
-Neuron.error.MSE = function (output, target, error) { 
+Neuron.error.MSE = function (output, target, error) {
 	if (error === undefined) {
 		error = output - target;
 	}
-	return 0.5 * Math.pow(error, 2); 
+	return 0.5 * Math.pow(error, 2);
 };
-Neuron.error.MSE.d = function (output, target, error) { 
+Neuron.error.MSE.d = function (output, target, error) {
 	if (error === undefined) {
 		error = output - target;
 	}
 	return error; 
 };
-
-Neuron.error.MAE = function (output, target, error) { 	
+Neuron.error.MAE = function (output, target, error) {
 	if (error === undefined) {
 		error = output - target;
 	}
-	return Math.abs(error); 
+	return Math.abs(error);
 };
 Neuron.error.MAE.d = function (output, target, error) {
 	if (error === undefined) {
@@ -262,11 +261,3 @@ Neuron.error.crossent.d = function (output, target, error) {
 	var t = Math.max(0, Math.min(1, target));
 	return (y - t) / Math.max(((1 - y) * y), Number.EPSILON);
 };
-
-Neuron.addBias = function(dataset) {
-	var data = dataset.slice();
-	for (var i = 0; i < data.length; i++) {
-		data[i].push(1);
-	}
-	return data;
-}
