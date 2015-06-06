@@ -18,6 +18,6 @@ module.exports = function (grunt) {
     grunt.registerTask('test', 'qunit:src');
     grunt.registerTask('travis', ['jshint', 'test']);
     gruntConfig.qunit = {
-        src: ['tests/testArray.html']
+        src: ['tests/testArray.html','tests/testNeuron.html','tests/testLayer.html']
     };
 };

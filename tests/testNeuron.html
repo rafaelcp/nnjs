@@ -107,6 +107,9 @@ QUnit.test("aggregation derivatives", function( assert ) {
 QUnit.test("error derivatives", function( assert ) {
 	var i, inp, target, out, inp2, out2, inp3, out3, deriv, numDeriv, ratio;
     for (error in Neuron.error) {
+		if (error === 'none') {
+			continue;
+		}
 		for (i = 0; i < 100; i++) {
 			if (error === 'crossent') {
 				inp = Math.random();
