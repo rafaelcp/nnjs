@@ -37,18 +37,18 @@ function Layer(n) {
 		if (!!inputs[0] && this.neurons[0].W.length && inputs[0].length !== this.neurons[0].W.length) {
 			throw 'Incorrect number of dimensions for the input data (is ' + inputs[0].length + ', should be ' + this.neurons[0].W.length + ')';
 		}
-		if (!!targets && targets.length > 0 && inputs.length != targets[0].length) {
+		if (!!targets && targets.length > 0 && inputs.length !== targets[0].length) {
 			console.log(targets);
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of targets ('+targets[0].length+').';
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of targets (' + targets[0].length + ').';
 		}
-		if (!!errors && inputs.length != errors[0].length) {
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of errors ('+errors[0].length+').';
+		if (!!errors && inputs.length !== errors[0].length) {
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of errors (' + errors[0].length + ').';
 		}
-		if (!!targets && targets.length > 0 && targets.length != this.neurons.length) {
-				throw 'Must have only '+this.neurons.length+' targets per input (1 per neuron in the layer), has '+targets.length+'.';
+		if (!!targets && targets.length > 0 && targets.length !== this.neurons.length) {
+				throw 'Must have only ' + this.neurons.length + ' targets per input (1 per neuron in the layer), has ' + targets.length + '.';
 		}
-		if (!!errors && errors.length > 0 &&  errors.length != this.neurons.length) {
-				throw 'Must have only '+this.neurons.length+' errors per input (1 per neuron in the layer), has '+errors.length+'.';
+		if (!!errors && errors.length > 0 &&  errors.length !== this.neurons.length) {
+				throw 'Must have only ' + this.neurons.length + ' errors per input (1 per neuron in the layer), has ' + errors.length + '.';
 		}
 		var errs = [];
 		this.neurons.forEach(function (el, i) { errs.push(el.batchLearn(inputs, !!targets ? targets[i] : null, !!errors ? errors[i] : null)); });
@@ -63,18 +63,18 @@ function Layer(n) {
 		if (!!inputs[0] && this.neurons[0].W.length && inputs[0].length !== this.neurons[0].W.length) {
 			throw 'Incorrect number of dimensions for the input data (is ' + inputs[0].length + ', should be ' + this.neurons[0].W.length + ')';
 		}
-		if (!!targets && targets.length > 0 && inputs.length != targets[0].length) {
+		if (!!targets && targets.length > 0 && inputs.length !== targets[0].length) {
 			console.log(targets);
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of targets ('+targets[0].length+').';
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of targets (' + targets[0].length + ').';
 		}
-		if (!!grads && inputs.length != grads[0].length) {
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of gradients ('+grads[0].length+').';
+		if (!!grads && inputs.length !== grads[0].length) {
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of gradients (' + grads[0].length + ').';
 		}
-		if (!!targets && targets.length > 0 && targets.length != this.neurons.length) {
-				throw 'Must have only '+this.neurons.length+' targets per input (1 per neuron in the layer), has '+targets.length+'.';
+		if (!!targets && targets.length > 0 && targets.length !== this.neurons.length) {
+				throw 'Must have only ' + this.neurons.length + ' targets per input (1 per neuron in the layer), has ' + targets.length + '.';
 		}
-		if (!!grads && grads.length > 0 &&  grads.length != this.neurons.length) {
-				throw 'Must have only '+this.neurons.length+' gradients per input (1 per neuron in the layer), has '+grads.length+'.';
+		if (!!grads && grads.length > 0 &&  grads.length !== this.neurons.length) {
+				throw 'Must have only ' + this.neurons.length + ' gradients per input (1 per neuron in the layer), has ' + grads.length + '.';
 		}
 		var propagations = [];
 		//console.log(inputs);

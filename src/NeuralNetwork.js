@@ -4,7 +4,7 @@ function NeuralNetwork() {
 	this.layers = [];
 	var i, layer;
 	for (i = 1; i < arguments.length; i++) {
-		layer = new Layer(arguments[i-1]);
+		layer = new Layer(arguments[i - 1]);
 		this.layers.push(layer);
 	}
 	this.forward = function (input) {
@@ -24,9 +24,9 @@ function NeuralNetwork() {
 	this.learn = function (input, target, error) {
 		var out = this.forward(input);
 		var err = out.sub(target);
-		var grad = this.layers[this.layers.length-1].errorFunction.d(out, target, error);
+		var grad = this.layers[this.layers.length - 1].errorFunction.d(out, target, error);
 		var i, propagation;
-		for (i = this.layers.length-1; i >= 0; i--) {
+		for (i = this.layers.length - 1; i >= 0; i--) {
 			this.layers[i].learn();
 			grad = this.layers[i].backward(input, target, grad);
 		}
@@ -40,9 +40,9 @@ function NeuralNetwork() {
 		}
 	};
 	this.setLearningRate = function (lr) {
-		this.setProperty('lr',lr);
+		this.setProperty('lr', lr);
 	};
 	this.setMomentum = function (m) {
-		this.setProperty('momentum',m);		
+		this.setProperty('momentum', m);		
 	};	
 }
