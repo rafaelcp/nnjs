@@ -15,7 +15,7 @@ function NeuralNetwork() {
 		return inp;
 	};
 	this.batchForward = function (inputs) {
-		var inp = input.slice();
+		var inp = inputs.slice();
 		for (var i = 0; i < this.layers.length; i++) {
 			inp = this.layers[i].batchForward(inp);
 		}
@@ -36,13 +36,13 @@ function NeuralNetwork() {
 	};
 	this.setProperty = function (prop, value) {
 		for (var i = 0; i < this.layers.length; i++) {
-			this.layers[i].setProperty(prop,value);
+			this.layers[i].setProperty(prop, value);
 		}
 	};
 	this.setLearningRate = function (lr) {
 		this.setProperty('lr', lr);
 	};
 	this.setMomentum = function (m) {
-		this.setProperty('momentum', m);		
-	};	
+		this.setProperty('momentum', m);
+	};
 }

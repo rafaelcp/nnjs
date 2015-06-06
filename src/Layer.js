@@ -45,10 +45,10 @@ function Layer(n) {
 			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of errors (' + errors[0].length + ').';
 		}
 		if (!!targets && targets.length > 0 && targets.length !== this.neurons.length) {
-				throw 'Must have only ' + this.neurons.length + ' targets per input (1 per neuron in the layer), has ' + targets.length + '.';
+			throw 'Must have only ' + this.neurons.length + ' targets per input (1 per neuron in the layer), has ' + targets.length + '.';
 		}
 		if (!!errors && errors.length > 0 &&  errors.length !== this.neurons.length) {
-				throw 'Must have only ' + this.neurons.length + ' errors per input (1 per neuron in the layer), has ' + errors.length + '.';
+			throw 'Must have only ' + this.neurons.length + ' errors per input (1 per neuron in the layer), has ' + errors.length + '.';
 		}
 		var errs = [];
 		this.neurons.forEach(function (el, i) { errs.push(el.batchLearn(inputs, !!targets ? targets[i] : null, !!errors ? errors[i] : null)); });
@@ -71,10 +71,10 @@ function Layer(n) {
 			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of gradients (' + grads[0].length + ').';
 		}
 		if (!!targets && targets.length > 0 && targets.length !== this.neurons.length) {
-				throw 'Must have only ' + this.neurons.length + ' targets per input (1 per neuron in the layer), has ' + targets.length + '.';
+			throw 'Must have only ' + this.neurons.length + ' targets per input (1 per neuron in the layer), has ' + targets.length + '.';
 		}
 		if (!!grads && grads.length > 0 &&  grads.length !== this.neurons.length) {
-				throw 'Must have only ' + this.neurons.length + ' gradients per input (1 per neuron in the layer), has ' + grads.length + '.';
+			throw 'Must have only ' + this.neurons.length + ' gradients per input (1 per neuron in the layer), has ' + grads.length + '.';
 		}
 		var propagations = [];
 		//console.log(inputs);

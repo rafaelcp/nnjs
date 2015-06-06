@@ -111,14 +111,14 @@ function Neuron(n) {
 		if (inputs[0].length !== this.W.length) {
 			throw 'Incorrect number of dimensions for the input data (is ' + inputs[0].length + ', should be ' + this.W.length + ')';
 		}
-		if (!!targets && inputs.length != targets.length) {
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of targets ('+targets.length+').';
+		if (!!targets && inputs.length !== targets.length) {
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of targets (' + targets.length + ').';
 		}
-		if (!!errors && inputs.length != errors.length) {
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of errors ('+errors.length+').';
+		if (!!errors && inputs.length !== errors.length) {
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of errors (' + errors.length + ').';
 		}
 		if (!!errors && errors[0].length) {
-				throw 'Must have only 1 error per input, has '+errors[0].length+'.';
+				throw 'Must have only 1 error per input, has ' + errors[0].length + '.';
 		}
 		var i, ainput, output, grad = null, input, target, error, errs = [];
 		for (i = 0; i < inputs.length; i++) {
@@ -149,14 +149,14 @@ function Neuron(n) {
 		if (inputs[0].length !== this.W.length) {
 			throw 'Incorrect number of dimensions for the input data (is ' + inputs[0].length + ', should be ' + this.W.length + ')';
 		}
-		if (!!targets && targets.length > 0 && inputs.length != targets.length) {
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of targets ('+targets.length+').';
+		if (!!targets && targets.length > 0 && inputs.length !== targets.length) {
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of targets (' + targets.length + ').';
 		}
-		if (!!grads && grads.length > 0 && inputs.length != grads.length) {
-			throw 'Number of inputs ('+inputs.length+') must be the same as the number of gradients ('+grads.length+').';
+		if (!!grads && grads.length > 0 && inputs.length !== grads.length) {
+			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of gradients (' + grads.length + ').';
 		}
 		if (!!grads && grads[0].length) {
-				throw 'Must have only 1 gradient per input, has '+grads[0].length+'.';
+				throw 'Must have only 1 gradient per input, has ' + grads[0].length + '.';
 		}
 		var i, signals = [];
 		for (i = 0; i < inputs.length; i++) {
