@@ -41,10 +41,10 @@ QUnit.test("randomize", function( assert ) {
 	assert.strictEqual(neuron.W.length,20);
 	assert.strictEqual(neuron.prevChange.length,20);	
 });
-QUnit.test("activate", function( assert ) {
+QUnit.test("forward", function( assert ) {
 	expect(0);
 });
-QUnit.test("batch activate", function( assert ) {
+QUnit.test("batch forward", function( assert ) {
 	expect(0);
 });
 QUnit.test("grad", function( assert ) {
@@ -71,43 +71,79 @@ QUnit.test("propagate", function( assert ) {
 QUnit.test("identity", function( assert ) {
 	expect(0);
 });
-QUnit.test("identity derivative", function( assert ) {
-	expect(0);
+QUnit.test("transfer derivatives", function( assert ) {
+    for (transfer in Neuron.transfer) {
+		for (var i = 0; i < 100; i++) {
+			var inp = (Math.random()*2-1) * i;
+			var out = Neuron.transfer[transfer](inp);
+			var inp2 = inp + 1e-9;
+			var out2 = Neuron.transfer[transfer](inp2);
+			var deriv = Neuron.transfer[transfer].d(inp,out);
+			var numDeriv = (out2 - out) / 1e-9;
+			assert.ok(Math.abs(deriv - numDeriv) < 1e-5,transfer+' inp: '+inp+' out: '+out+' deriv: '+deriv+' num. deriv: '+numDeriv);
+		}
+	}
+});
+/*
+QUnit.test("aggregation derivatives", function( assert ) {
+	var i, inp, W, out, inp2, out2, inp3, out3, deriv, numDeriv, ratio;
+    for (aggregation in Neuron.aggregation) {
+		for (i = 0; i < 100; i++) {
+			inp = Array.random(i,1).mul(2).sub(1).mul(i);
+			W = Array.random(i,1).mul(2).sub(1).mul(i);
+			out = Neuron.aggregation[aggregation](W,inp);
+			inp2 = inp + 1e-9;
+			out2 = Neuron.aggregation[aggregation](inp2,target);
+			inp3 = inp - 1e-9;
+			out3 = Neuron.aggregation[aggregation](inp3,target);
+			deriv = Neuron.aggregation[aggregation].d(inp,target);
+			numDeriv = (out2 - out3) / (2 * 1e-9);
+			ratio = deriv / numDeriv;
+			assert.ok(Math.abs(deriv - numDeriv) < 1e-5 || (ratio > 0.9 && ratio < 1.1),error+' inp: '+inp+' target: '+target+' out: '+out+' deriv: '+deriv+' num. deriv: '+numDeriv);
+		}
+	}
+});
+*/
+QUnit.test("error derivatives", function( assert ) {
+	var i, inp, target, out, inp2, out2, inp3, out3, deriv, numDeriv, ratio;
+    for (error in Neuron.error) {
+		for (i = 0; i < 100; i++) {
+			if (error === 'crossent') {
+				inp = Math.random();
+				target = Math.random();
+			}
+			else {
+				inp = (Math.random()*2-1) * i;
+				target = (Math.random()*2-1) * i;
+			}
+			out = Neuron.error[error](inp,target);
+			inp2 = inp + 1e-9;
+			out2 = Neuron.error[error](inp2,target);
+			inp3 = inp - 1e-9;
+			out3 = Neuron.error[error](inp3,target);
+			deriv = Neuron.error[error].d(inp,target);
+			numDeriv = (out2 - out3) / (2 * 1e-9);
+			ratio = deriv / numDeriv;
+			assert.ok(Math.abs(deriv - numDeriv) < 1e-5 || (ratio > 0.9 && ratio < 1.1),error+' inp: '+inp+' target: '+target+' out: '+out+' deriv: '+deriv+' num. deriv: '+numDeriv);
+		}
+	}
 });
 QUnit.test("tanh", function( assert ) {
-	expect(0);
-});
-QUnit.test("tanh derivative", function( assert ) {
 	expect(0);
 });
 QUnit.test("logistic", function( assert ) {
 	expect(0);
 });
-QUnit.test("logistic derivative", function( assert ) {
-	expect(0);
-});
 QUnit.test("relu", function( assert ) {
-	expect(0);
-});
-QUnit.test("relu derivative", function( assert ) {
 	expect(0);
 });
 QUnit.test("gaussian", function( assert ) {
 	expect(0);
 });
-QUnit.test("gaussian derivative", function( assert ) {
-	expect(0);
-});
 QUnit.test("sine", function( assert ) {
 	expect(0);
 });
-QUnit.test("sine derivative", function( assert ) {
-	expect(0);
-});
 QUnit.test("cos", function( assert ) {
-	expect(0);
-});
-QUnit.test("cos derivative", function( assert ) {
 	expect(0);
 });
 QUnit.test("dot", function( assert ) {
@@ -140,23 +176,54 @@ QUnit.test("distance derivative wrt x", function( assert ) {
 QUnit.test("MSE", function( assert ) {
 	expect(0);
 });
-QUnit.test("MSE derivative", function( assert ) {
-	expect(0);
-});
 QUnit.test("MAE", function( assert ) {
-	expect(0);
-});
-QUnit.test("MAE derivative", function( assert ) {
 	expect(0);
 });
 QUnit.test("cross-entropy", function( assert ) {
 	expect(0);
 });
-QUnit.test("cross-entropy derivative", function( assert ) {
-	expect(0);
-});
 </script>
 
+<h2>Gradient Check</h2>
+
+<script>
+/*
+QUnit.test("gradient check", function( assert ) {
+	var i, j, neuron, neuron2, nInputs, dataSize, data, targets, output, output2, error, error2, grad, numGrad;
+	for (var aggregation in Neuron.aggregation) {
+		for (var transfer in Neuron.transfer) {
+			for (var errorf in Neuron.error) {
+				if (errorf == 'crossent' && transfer != 'logistic' && transfer != 'gaussian') continue;
+				nInputs = Math.ceil(Math.random() * 100);
+				dataSize = Math.ceil(Math.random() * 100);
+				neuron = new Neuron(nInputs);
+				neuron2 = new Neuron(nInputs);
+				neuron.transfer = neuron2.transfer = Neuron.transfer[transfer];
+				neuron.aggregate = neuron2.aggregate = Neuron.aggregation[aggregation];
+				neuron.errorFunction = neuron2.errorFunction = Neuron.error[errorf];
+				data = Array.random(dataSize, nInputs);
+				targets = Array.random(dataSize, 1);
+				for (i = 0; i < dataSize; i++) {
+					numGrad = [];
+					output = neuron.forward(data[i]);
+					error = neuron.cost(data[i],targets[i]);
+					grad = neuron.grad(data[i],targets[i]);
+					for (j = 0; j < nInputs; j++) {
+						neuron2.W = neuron.W.slice();
+						neuron2.W[j] += neuron2.eps;
+						output2 = neuron2.forward(data[i]);
+						error2 = neuron2.cost(data[i],targets[i]);
+						numGrad[j] = (error2 - error) / neuron2.eps;
+						var ratio = grad[j] / numGrad[j];
+						assert.ok(Math.abs(grad[j] - numGrad[j]) < neuron.eps || grad[j] === numGrad[j] || (ratio > 0.9 && ratio < 1.1),dataSize+','+nInputs+'\n'+aggregation+','+transfer+','+errorf+'\ngrad: '+grad[j]+'\nnum. grad: '+numGrad[j]);
+					}
+				}
+			}
+		}
+	}
+});
+*/
+</script>
 
 <table id="axt">
 <caption>Aggregation X Transfer</caption>
@@ -189,7 +256,7 @@ for (var k = 0; k < 1; k++) {
 				N.errorFunction = Neuron.error[error];
 				var errs;
 				for (var i = 0; i < 100; i++) { errs = N.batchLearn([[0,0,1],[0,1,1],[1,0,1],[1,1,1]],[0,0,0,1])}
-				var out_and = N.batchActivate([[0,0,1],[0,1,1],[1,0,1],[1,1,1]]);
+				var out_and = N.batchForward([[0,0,1],[0,1,1],[1,0,1],[1,1,1]]);
 				if (out_and[3] > out_and[2] && out_and[3] > out_and[1] && out_and[3] > out_and[0]) {
 					//console.info('AND OK',aggregation,transfer,error);
 				}
@@ -204,7 +271,7 @@ for (var k = 0; k < 1; k++) {
 				N.aggregate = Neuron.aggregation[aggregation];
 				N.errorFunction = Neuron.error[error];
 				for (var i = 0; i < 100; i++) { errs = N.batchLearn([[0,0,1],[0,1,1],[1,0,1],[1,1,1]],[0,1,1,1])}
-				var out_or = N.batchActivate([[0,0,1],[0,1,1],[1,0,1],[1,1,1]]);
+				var out_or = N.batchForward([[0,0,1],[0,1,1],[1,0,1],[1,1,1]]);
 				if (out_or[3] > out_or[0] && out_or[2] > out_or[0] && out_or[1] > out_or[0]) {
 					//console.info('OR OK',aggregation,transfer,error);
 				}
@@ -242,7 +309,7 @@ for (var k = 0; k < 1; k++) {
 						targets.push(Math.random() * scale);
 					}
 					for (var i = 0; i < 100; i++) { errs = N.batchLearn(inputs,targets)}
-					var out_rnd = N.batchActivate(inputs);
+					var out_rnd = N.batchForward(inputs);
 
 					//console.debug('RANDOM GRADIENT CHECK',aggregation,transfer,error);
 					var check = N.batchCheck(inputs,targets);

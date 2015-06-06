@@ -78,7 +78,7 @@
 	};
 	Array.prototype.dot = function (arr) {
 		if (arr.length !== this.length) {
-			throw 'Array sizes must match';
+			throw 'Array sizes must match ('+this.length+' x '+arr.length+')';
 		}
 		var result = 0;
 		this.forEach(function (el, i) { if (!isNaN(el) && !isNaN(arr[i])) { result += el * arr[i]; } });
@@ -261,6 +261,21 @@
 			return s;
 		}
 	};
+	Array.prototype.addColumn = function(which,value) {
+		value = value || 0;
+		var data = this.slice();
+		for (var i = 0; i < data.length; i++) {
+			data[i].splice(which,0,value);
+		}
+		return data;
+	}	
+	Array.prototype.removeColumn = function(which) {
+		var data = this.slice();
+		for (var i = 0; i < data.length; i++) {
+			data[i].splice(which,1);
+		}
+		return data;
+	}	
 	//STATIC METHODS
 	Array.repeat = function (x, n, m) {
 		if (x === undefined) {

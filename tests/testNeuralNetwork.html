@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Layer Test</title>
+  <title>Neural Network Test</title>
   <link rel="stylesheet" href="qunit-1.18.0.css">
 	<style>
 	body {
@@ -40,13 +40,13 @@
   <div id="qunit-fixture"></div>
   <script src="qunit-1.18.0.js"></script>
   <script src="blanket.min.js"></script>
-
 <script src="../src/Array.js"></script>
 <script src="../src/Neuron.js"></script>
-<script src="../src/Layer.js" data-cover></script>
-<h1>Neuron Layer Test</h1>
+<script src="../src/Layer.js"></script>
+<script src="../src/NeuralNetwork.js" data-cover></script>
+<h1>Neural Network Test</h1>
+
 <script>
-'use strict';
 QUnit.test("constructor", function( assert ) {
 	expect(0);
 });
@@ -56,10 +56,10 @@ QUnit.test("add neuron", function( assert ) {
 QUnit.test("remove neuron", function( assert ) {
 	expect(0);
 });
-QUnit.test("forward", function( assert ) {
+QUnit.test("activate", function( assert ) {
 	expect(0);
 });
-QUnit.test("batch forward", function( assert ) {
+QUnit.test("batch activate", function( assert ) {
 	expect(0);
 });
 QUnit.test("learn", function( assert ) {
@@ -80,44 +80,26 @@ QUnit.test("set momentum", function( assert ) {
 
 </script>
 
-<h2>Simultaneous OR + AND</h2>
+<h2>XOR</h2>
 
 <details>
-<summary>Layer Data</summary>
-<pre id="logiclayer"></pre>
+<summary>Network Data</summary>
+<pre id="logicnetwork"></pre>
 </details>
 
 <img id="chart" height="250" width="400">
-<table>
-<caption>Truth Table</caption>
-<tr><th>A</th><th>B</th><th>OR</th><th>OR<br>(predicted)</th><th>AND</th><th>AND<br>(predicted)</th></tr>
-<tr><td>0</td><td>0</td><td>0</td><td id="or1"></td><td>0</td><td id="and1"></td></tr>
-<tr><td>0</td><td>1</td><td>1</td><td id="or2"></td><td>0</td><td id="and2"></td></tr>
-<tr><td>1</td><td>0</td><td>1</td><td id="or3"></td><td>0</td><td id="and3"></td></tr>
-<tr><td>1</td><td>1</td><td>1</td><td id="or4"></td><td>1</td><td id="and4"></td></tr>
-</table>
-
-<h2>XOR (2 Layers)</h2>
-
-<details>
-<summary>Layers Data</summary>
-<pre id="logiclayer1"></pre>
-<pre id="logiclayer2"></pre>
-</details>
-
-<img id="xorchart" height="250" width="400">
 <table>
 <caption>Truth Table</caption>
 <tr><th>A</th><th>B</th><th>XOR</th><th>XOR<br>(predicted)</th></tr>
 <tr><td>0</td><td>0</td><td>0</td><td id="xor1"></td></tr>
 <tr><td>0</td><td>1</td><td>1</td><td id="xor2"></td></tr>
 <tr><td>1</td><td>0</td><td>1</td><td id="xor3"></td></tr>
-<tr><td>1</td><td>1</td><td>0</td><td id="xor4"></td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td id="xor4"></td></tr>
 </table>
 
 <h2>Iris Dataset</h2>
 <details>
-<summary>Layer Data</summary>
+<summary>Network Data</summary>
 <pre id="irislayer"></pre>
 </details>
 
@@ -128,90 +110,36 @@ QUnit.test("set momentum", function( assert ) {
 </table>
 
 <script>
-'use strict';
 var charturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,100|1,0,1,0.2&chco=00FF00,0000FF&chdl=OR|AND&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
 var irischarturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chxr=0,1,100|1,0,100&chxl=2:|Epoch|3:|Error%&chxp=2,50|3,50&chd=t:';
-var xorcharturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,200|1,0,1,0.2&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
 
-var l = new Layer(2);
-l.setLearningRate(1);
-l.setMomentum(0.9);
-l.setProperty('decay',0.0);
-l.setProperty('transfer',Neuron.transfer.logistic);
-l.setProperty('errorFunction',Neuron.error.crossent);
-var inputs = [[0,0,1],[0,1,1],[1,0,1],[1,1,1]];
-var or_targets = [0,1,1,1];
-var and_targets = [0,0,0,1];
-var errs = [];
-var errs1 = [], errs2 = [];
-
-for (var i = 0; i < 100; i++) {
-	errs[i] = l.batchLearn(inputs,[or_targets,and_targets]);
-	errs[i][0] = errs[i][0].norm()/2;
-	errs[i][1] = errs[i][1].norm()/2;
-	errs1[i] = Math.round(errs[i][0]*1000)/1000;
-	errs2[i] = Math.round(errs[i][1]*1000)/1000;
-	//console.log('Epoch',i,'OR RMSE',errs[i][0],'AND RMSE',errs[i][1]);
-}
-var outputs = l.batchForward(inputs);
-//console.log('outputs',outputs);
-var or = outputs[0].map(function(el){return Number(el > 0.5)});
-var and = outputs[1].map(function(el){return Number(el > 0.5)});
-for (var i = 0; i < 4; i++) {
-	var el = document.getElementById('or'+(i+1));
-	el.innerHTML = or[i];
-	if (or[i] === or_targets[i]) el.classList.add('correct'); else el.classList.add('wrong');
-	el = document.getElementById('and'+(i+1));
-	el.innerHTML = and[i];
-	if (and[i] === and_targets[i]) el.classList.add('correct'); else el.classList.add('wrong');
-}
-chart.src = charturl + errs1.join(',') + '|' + errs2.join(',');
-logiclayer.innerHTML = JSON.stringify(l,null,"\t");
-
-//XOR
-var l1 = new Layer(2);
-var l2 = new Layer(1);
-l1.setLearningRate(1);
-l1.setMomentum(0.9);
-l1.setProperty('decay',0.0);
-l1.setProperty('transfer',Neuron.transfer.tanh);
-l1.setProperty('errorFunction',Neuron.error.none);
-l2.setLearningRate(1);
-l2.setMomentum(0.9);
-l2.setProperty('decay',0.0);
-l2.setProperty('transfer',Neuron.transfer.logistic);
-l2.setProperty('errorFunction',Neuron.error.crossent);
+var nn = new NeuralNetwork(2);
+nn.setLearningRate(1);
+nn.setMomentum(0.9);
+nn.setProperty('decay',0.0);
+nn.setProperty('transfer',Neuron.transfer.logistic);
+nn.setProperty('errorFunction',Neuron.error.crossent);
 var inputs = [[0,0,1],[0,1,1],[1,0,1],[1,1,1]];
 var xor_targets = [0,1,1,0];
 var errs = [];
 var errs1 = [];
 
-for (var i = 0; i < 200; i++) {
-	var out1 = l1.batchForward(inputs);
-	out1 = out1.transpose().addColumn(l1.neurons.length,1);
-	//console.log(out1);
-	var out2 = l2.batchForward(out1);
-	errs[i] = l2.batchLearn(out1,[xor_targets]);
-	var grad = l2.batchBackward(out1,[],errs[i]);
-	grad = grad.removeColumn(l1.neurons.length).transpose();
-	//console.log(grad);
-	//console.log(out1.dims(),errs[i].dims(),grad.dims());
-	l1.batchLearn(inputs,null,grad);
-	errs[i] = errs[i][0].norm() / 2;
-	errs1[i] = Math.round(errs[i] * 1000) / 1000;
+for (var i = 0; i < 100; i++) {
+	errs[i] = nn.batchLearn(inputs,xor_targets);
+	errs[i] = errs[i].norm()/2;
+	errs1[i] = Math.round(errs[i]*1000)/1000;
+	//console.log('Epoch',i,'OR RMSE',errs[i][0],'AND RMSE',errs[i][1]);
 }
-var outputs = l2.batchForward(l1.batchForward(inputs).transpose().addColumn(l1.neurons.length,1));
-var xor = outputs[0].map(function(el){return Number(el > 0.5)});
-
+var outputs = nn.batchActivate(inputs);
+//console.log('outputs',outputs);
+xor = outputs.map(function(el){return Number(el > 0.5)});
 for (var i = 0; i < 4; i++) {
 	var el = document.getElementById('xor'+(i+1));
 	el.innerHTML = xor[i];
 	if (xor[i] === xor_targets[i]) el.classList.add('correct'); else el.classList.add('wrong');
 }
-xorchart.src = xorcharturl + errs1.join(',');
-logiclayer1.innerHTML = JSON.stringify(l1,null,"\t");
-logiclayer2.innerHTML = JSON.stringify(l2,null,"\t");
-
+chart.src = charturl + errs1.join(',');
+logicnetwork.innerHTML = JSON.stringify(nn,null,"\t");
 
 //Iris
 
@@ -404,7 +332,7 @@ var start = new Date();
 for (var i = 0; i < 100; i++) {
 	errs[i] = l.batchLearn(inputs,targets);
 	//console.log('errs',errs[i]);
-	var y = l.batchForward(inputs).transpose().map(function(el){return el.argmax()});
+	var y = l.batchActivate(inputs).transpose().map(function(el){return el.argmax()});
 	var t = iris_targets.map(function(el){return el.argmax()});
 	errs1[i] = Math.round(y.map(function(el,i) { return Number(el !== t[i]) }).sum()*100/150);
 	//console.log('Epoch',i,'Error',errs1[i]);
@@ -413,7 +341,7 @@ var end = new Date();
 var dur = end - start;
 irischart.src = irischarturl + errs1.join(',');
 
-var out = l.batchForward(inputs).transpose();
+var out = l.batchActivate(inputs).transpose();
 var correct = 0;
 for (var i = 0; i < out.length; i++) {
 	var el = document.getElementById('iris'+i);
