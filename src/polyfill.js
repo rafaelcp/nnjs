@@ -17,3 +17,4 @@ Math.sign = Math.sign || function (x) {
 	}
 	return x > 0 ? 1 : -1;
 };
+Number.EPSILON = Number.EPSILON || 2.220446049250313e-16;
