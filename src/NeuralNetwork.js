@@ -1,4 +1,4 @@
-/*global Layer:false */
+/*global Layer:false, Neuron:false */
 'use strict';
 function NeuralNetwork() {
 	this.layers = [];
