@@ -41,10 +41,10 @@ function Layer(n) {
 			console.log(targets);
 			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of targets (' + targets[0].length + ').';
 		}
-		if (!!errors && inputs.length !== errors[0].length) {
+		if (!!errors && errors.length && errors.length > 0 && inputs.length !== errors[0].length) {
 			throw 'Number of inputs (' + inputs.length + ') must be the same as the number of errors (' + errors[0].length + ').';
 		}
-		if (!!targets && targets.length > 0 && targets.length !== this.neurons.length) {
+		if (!!targets && targets.length && targets.length > 0 && targets.length !== this.neurons.length) {
 			throw 'Must have only ' + this.neurons.length + ' targets per input (1 per neuron in the layer), has ' + targets.length + '.';
 		}
 		if (!!errors && errors.length > 0 &&  errors.length !== this.neurons.length) {
@@ -81,7 +81,7 @@ function Layer(n) {
 		//console.log(targets);
 		//console.log(grads);
 		//this.neurons.forEach(function (el, i) { propagations.push(el.batchBackward(inputs, targets[i], grads[i])); });
-		this.neurons.forEach(function (el, i) { var grad = el.batchBackward(inputs, targets[i], grads[i]); if (propagations.length === 0) { propagations = grad; } else { propagations = propagations.add(grad) } });
+		this.neurons.forEach(function (el, i) { var grad = el.batchBackward(inputs, targets[i], !!grads ? grads[i] : null); if (propagations.length === 0) { propagations = grad; } else { propagations = propagations.add(grad) } });
 		//console.log(propagations);
 		
 		return propagations;

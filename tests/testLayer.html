@@ -132,7 +132,7 @@ QUnit.test("set momentum", function( assert ) {
 'use strict';
 var charturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,100|1,0,1,0.2&chco=00FF00,0000FF&chdl=OR|AND&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
 var irischarturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chxr=0,1,100|1,0,100&chxl=2:|Epoch|3:|Error%&chxp=2,50|3,50&chd=t:';
-var xorcharturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,200|1,0,1,0.2&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
+var xorcharturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,300|1,0,1,0.2&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
 
 var l = new Layer(2);
 l.setLearningRate(1);
@@ -187,7 +187,7 @@ var xor_targets = [0,1,1,0];
 var errs = [];
 var errs1 = [];
 
-for (var i = 0; i < 200; i++) {
+for (var i = 0; i < 300; i++) {
 	var out1 = l1.batchForward(inputs);
 	out1 = out1.transpose().addColumn(l1.neurons.length,1);
 	//console.log(out1);

@@ -95,7 +95,7 @@ QUnit.test("set momentum", function( assert ) {
 <tr><td>0</td><td>0</td><td>0</td><td id="xor1"></td></tr>
 <tr><td>0</td><td>1</td><td>1</td><td id="xor2"></td></tr>
 <tr><td>1</td><td>0</td><td>1</td><td id="xor3"></td></tr>
-<tr><td>1</td><td>1</td><td>1</td><td id="xor4"></td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td id="xor4"></td></tr>
 </table>
 
 <h2>Iris Dataset</h2>
@@ -111,27 +111,32 @@ QUnit.test("set momentum", function( assert ) {
 </table>
 
 <script>
-var charturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,100|1,0,1,0.2&chco=00FF00,0000FF&chdl=OR|AND&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
+var charturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,300|1,0,1,0.2&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
 var irischarturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chxr=0,1,100|1,0,100&chxl=2:|Epoch|3:|Error%&chxp=2,50|3,50&chd=t:';
 
-var nn = new NeuralNetwork(2);
+var nn = new NeuralNetwork(3,2,1);
 nn.setLearningRate(1);
 nn.setMomentum(0.9);
 nn.setProperty('decay',0.0);
 nn.setProperty('transfer',Neuron.transfer.logistic);
-nn.setProperty('errorFunction',Neuron.error.crossent);
+nn.layers[1].setProperty('errorFunction',Neuron.error.crossent);
+nn.layers[0].setProperty('transfer',Neuron.transfer.tanh);
 var inputs = [[0,0,1],[0,1,1],[1,0,1],[1,1,1]];
 var xor_targets = [0,1,1,0];
 var errs = [];
 var errs1 = [];
+//console.log(nn);
 
-for (var i = 0; i < 100; i++) {
-	errs[i] = nn.batchLearn(inputs,xor_targets);
-	errs[i] = errs[i].norm()/2;
-	errs1[i] = Math.round(errs[i]*1000)/1000;
+for (var i = 0; i < 300; i++) {
+	errs[i] = nn.batchLearn(inputs,[xor_targets]);
+//console.log('errs i',errs[i]);
+	errs[i] = errs[i][0].norm() / 2;
+	errs1[i] = Math.round(errs[i] * 1000) / 1000;
 	//console.log('Epoch',i,'OR RMSE',errs[i][0],'AND RMSE',errs[i][1]);
 }
-var outputs = nn.batchActivate(inputs);
+//console.log('errors',errs,errs1);
+var outputs = nn.batchForward(inputs);
+outputs = outputs[outputs.length-1];
 //console.log('outputs',outputs);
 xor = outputs.map(function(el){return Number(el > 0.5)});
 for (var i = 0; i < 4; i++) {
