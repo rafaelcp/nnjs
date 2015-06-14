@@ -27,7 +27,7 @@ function NeuralNetwork() {
 				inp = inp.addColumn(this.layers[i].neurons.length, 1);
 			}
 			inps.push(inp);
-		}	
+		}
 		//console.log('inps',inps);
 		return inps;
 	};
