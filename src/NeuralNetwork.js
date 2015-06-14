@@ -6,7 +6,7 @@ function NeuralNetwork() {
 	for (i = 1; i < arguments.length; i++) {
 		layer = new Layer(arguments[i]);
 		if (i < arguments.length - 1) {
-			layer.setProperty('errorFunction',Neuron.error.none);
+			layer.setProperty('errorFunction', Neuron.error.none);
 		}
 		this.layers.push(layer);
 	}
@@ -20,7 +20,7 @@ function NeuralNetwork() {
 	this.batchForward = function (inputs) {
 		var inp = inputs.slice();
 		var inps = [inputs];
-		for (var i = 0; i < this.layers.length; i++) {			
+		for (var i = 0; i < this.layers.length; i++) {
 			inp = this.layers[i].batchForward(inp);
 			inp = inp.transpose();
 			if (i < this.layers.length - 1) {
@@ -47,9 +47,9 @@ function NeuralNetwork() {
 		//console.log(inps);
 		var grad, error;
 		var errs = [];
-		error = this.layers[this.layers.length - 1].batchLearn(inps[this.layers.length - 1],targets);
+		error = this.layers[this.layers.length - 1].batchLearn(inps[this.layers.length - 1], targets);
 		errs = error;
-		grad = this.layers[this.layers.length - 1].batchBackward(inps[this.layers.length - 1],targets,error);
+		grad = this.layers[this.layers.length - 1].batchBackward(inps[this.layers.length - 1], targets, error);
 		if (this.layers.length > 1) {
 			grad = grad.removeColumn(this.layers[this.layers.length - 2].neurons.length);
 		}
@@ -57,8 +57,8 @@ function NeuralNetwork() {
 		//console.log('grad',grad);
 		for (var i = this.layers.length - 2; i >= 0; i--) {
 			//console.log(i,grad);
-			error = this.layers[i].batchLearn(inps[i],[],grad);				
-			grad = this.layers[i].batchBackward(inps[i],[],error);
+			error = this.layers[i].batchLearn(inps[i], [], grad);
+			grad = this.layers[i].batchBackward(inps[i], [], error);
 			if (i > 0) {
 				grad = grad.removeColumn(this.layers[i - 1].neurons.length);
 			}
