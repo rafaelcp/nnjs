@@ -112,7 +112,7 @@ QUnit.test("set momentum", function( assert ) {
 
 <script>
 var charturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chds=0,1&chxr=0,1,300|1,0,1,0.2&chxl=2:|Epoch|3:|Error&chxp=2,50|3,50&chd=t:';
-var irischarturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chxr=0,1,100|1,0,100&chxl=2:|Epoch|3:|Error%&chxp=2,50|3,50&chd=t:';
+var irischarturl = 'https://chart.googleapis.com/chart?cht=lc&chs=400x250&chxt=x,y,x,y&chxr=0,1,300|1,0,100&chxl=2:|Epoch|3:|Error%&chxp=2,50|3,50&chd=t:';
 
 var nn = new NeuralNetwork(3,2,1);
 nn.setLearningRate(1);
@@ -304,9 +304,8 @@ for (var i = 0; i < 300; i+=2) {
 	iris_inputs.push(iris_data[i]);
 	iris_targets.push(iris_data[i+1]);
 }
-
+iris_inputs = iris_inputs.addColumn(iris_inputs[0].length,1);
 var classnames = ['Iris-Setosa','Iris-Versicolor','Iris-Virginica'];
-
 for (var i = 0; i < 150; i++) {
 	var row = document.createElement('tr');
 	for (var j = 0; j < 4; j++) {
@@ -323,22 +322,25 @@ for (var i = 0; i < 150; i++) {
 	iristable.appendChild(row);
 }
 
-var l = new Layer(3);
-l.setLearningRate(0.01);
-l.setMomentum(0.9);
-l.setProperty('decay',0.01);
-l.setProperty('transfer',Neuron.transfer.logistic);
-l.setProperty('errorFunction',Neuron.error.crossent);
+var nn_iris = new NeuralNetwork(5,3,3);
+nn_iris.setLearningRate(0.01);
+nn_iris.setMomentum(0.9);
+nn_iris.setProperty('decay',0.1);
+nn_iris.layers[0].setProperty('transfer',Neuron.transfer.tanh);
+nn_iris.layers[1].setProperty('transfer',Neuron.transfer.logistic);
+nn_iris.layers[1].setProperty('errorFunction',Neuron.error.crossent);
 var inputs = iris_inputs;
 var targets = iris_targets.transpose();
 var errs = [];
 var errs1 = [];
 
 var start = new Date();
-for (var i = 0; i < 100; i++) {
-	errs[i] = l.batchLearn(inputs,targets);
+for (var i = 0; i < 300; i++) {
+	errs[i] = nn_iris.batchLearn(inputs,targets);
 	//console.log('errs',errs[i]);
-	var y = l.batchActivate(inputs).transpose().map(function(el){return el.argmax()});
+	var out = nn_iris.batchForward(inputs)[2];
+	var y = out.map(function(el){return el.argmax()});
+	//console.log('out',out,'y',y);
 	var t = iris_targets.map(function(el){return el.argmax()});
 	errs1[i] = Math.round(y.map(function(el,i) { return Number(el !== t[i]) }).sum()*100/150);
 	//console.log('Epoch',i,'Error',errs1[i]);
@@ -346,8 +348,9 @@ for (var i = 0; i < 100; i++) {
 var end = new Date();
 var dur = end - start;
 irischart.src = irischarturl + errs1.join(',');
+//console.log(nn_iris);
 
-var out = l.batchActivate(inputs).transpose();
+var out = nn_iris.batchForward(inputs)[2];
 var correct = 0;
 for (var i = 0; i < out.length; i++) {
 	var el = document.getElementById('iris'+i);
@@ -360,5 +363,5 @@ for (var i = 0; i < out.length; i++) {
 		el.classList.add('wrong');
 }
 iriscap.innerHTML += (correct/150*100) + '% Training Time: '+dur+'ms';
-irislayer.innerHTML = JSON.stringify(l,null,"\t");
+irislayer.innerHTML = JSON.stringify(nn_iris,null,"\t");
 </script>
